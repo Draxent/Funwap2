@@ -1,0 +1,234 @@
+package org.draxent.funwap.syntacticanalysis;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.draxent.funwap.FunwapException;
+import org.draxent.funwap.ast.SyntacticNode;
+import org.draxent.funwap.ast.expression.ConstantNode;
+import org.draxent.funwap.ast.expression.ExpressionNode;
+import org.draxent.funwap.ast.expression.VarNode;
+import org.draxent.funwap.ast.expression.operation.BinaryOperationNode;
+import org.draxent.funwap.ast.statement.AssignNode;
+import org.draxent.funwap.ast.statement.BlockNode;
+import org.draxent.funwap.ast.statement.CallNode;
+import org.draxent.funwap.ast.statement.StatementNode;
+import org.draxent.funwap.ast.statement.command.ForNode;
+import org.draxent.funwap.ast.statement.command.IfNode;
+import org.draxent.funwap.ast.statement.command.PrintNode;
+import org.draxent.funwap.ast.statement.command.ReadNode;
+import org.draxent.funwap.ast.statement.command.ReturnNode;
+import org.draxent.funwap.ast.statement.command.WhileNode;
+import org.draxent.funwap.lexicalanalysis.Token;
+import org.draxent.funwap.lexicalanalysis.TokenType;
+
+public class ParserBlock {	
+	private TokenReader tokenReader;
+	private ParserExpression parserExpression;
+	private ParserDeclarationList parserDeclarationList;
+	
+	public ParserBlock(TokenReader tokenReader, ParserExpression parserExpression, ParserDeclarationList parserDeclarationList) {
+		this.tokenReader = tokenReader;
+		this.parserExpression = parserExpression;
+		this.parserDeclarationList = parserDeclarationList;
+	}
+	
+	public BlockNode parse(BlockNode.Type blockType) {
+		Token token = tokenReader.matchTokenAndMoveOn(TokenType.CURLYBR_OPEN);
+		BlockNode blockNode = new BlockNode(token, blockType);
+
+		parserDeclarationList.parse(blockNode);
+		parseStatementList(blockNode);
+
+		tokenReader.matchTokenAndMoveOn(TokenType.CURLYBR_CLOSE);
+		return blockNode;
+	}
+	
+	private void parseStatementList(BlockNode blockNode) {
+		if (tokenReader.getCurrent().isStatement()) {
+			blockNode.addChild(parseStatement());
+			parseStatementList(blockNode);
+		}
+	}
+	
+	private StatementNode parseStatement() {
+		switch(tokenReader.getCurrent().getType()) {
+		case IDENTIFIER:
+			return parseStatementStartingWithIdentifier();
+		case IF:
+			return parseStatementIf();
+		case WHILE:
+			return parseStatementWhile();
+		case FOR:
+			return parseStatementFor();
+		case RETURN:
+			return parseStatementReturn();
+		case PRINTLN:
+			return parseStatementPrintln();
+		default:
+			throw new FunwapException("Invalid statement, token: " + tokenReader.getCurrent() + ".", tokenReader.getCurrent());
+		}
+	}
+	
+	private StatementNode parseStatementStartingWithIdentifier() {
+		Token identifier = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
+		if (tokenReader.isCurrentOfType(TokenType.ROUNDBR_OPEN)) {
+			return parseStatementCall(identifier);
+		} else if (tokenReader.isCurrentOfType(TokenType.ASSIGN) && tokenReader.checkNextTokenType(TokenType.READLN)) {
+			return parseStatementReadln(identifier);
+		} else {
+			return parseStatementIdentifier(identifier);
+		}
+	}
+	
+	private StatementNode parseStatementCall(Token identifier) {
+		CallNode callNode = parseCall(identifier, true);
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		return callNode;
+	}
+	
+	private CallNode parseCall(Token identifier, boolean isStatement) {
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		List<ExpressionNode> actualParameters = parseActualParameters();
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+
+		return new CallNode(identifier, actualParameters, isStatement);
+	}
+	
+	private List<ExpressionNode> parseActualParameters() {
+		List<ExpressionNode> actualParameters = new ArrayList<>();
+		if (!tokenReader.isCurrentOfType(TokenType.ROUNDBR_CLOSE))
+		{
+			actualParameters.add(parserExpression.parse());
+			while (tokenReader.isCurrentOfType(TokenType.COMMA))
+			{
+				tokenReader.moveNext();
+				actualParameters.add(parserExpression.parse());
+			}
+		}
+		return actualParameters;
+	}
+	
+	private StatementNode parseStatementReadln(Token identifier) {
+		tokenReader.moveNext();
+		ReadNode readNode = new ReadNode(tokenReader.getCurrent(), identifier);
+		tokenReader.moveNext();
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+		
+		return new AssignNode(identifier, readNode);
+	}
+	
+	private StatementNode parseStatementIf() {
+		Token tokenIf = tokenReader.getCurrent();
+		tokenReader.moveNext();
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		ExpressionNode conditionNode = parserExpression.parse();
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+		
+		BlockNode thenNode = this.parse(BlockNode.Type.THEN);
+		BlockNode elseNode = null;
+		if (tokenReader.isCurrentOfType(TokenType.ELSE)) {
+			tokenReader.moveNext();
+			elseNode = this.parse(BlockNode.Type.ELSE);
+		}
+		return new IfNode(tokenIf, conditionNode, thenNode, elseNode);
+	}
+	
+	private StatementNode parseStatementWhile() {
+		Token tokenWhile = tokenReader.getCurrent();
+		tokenReader.moveNext();
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		ExpressionNode conditionNode = parserExpression.parse();
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+		
+		BlockNode bodyNode = this.parse(BlockNode.Type.WHILE);
+		return new WhileNode(tokenWhile, conditionNode, bodyNode);
+	}
+	
+	// for(IDE = Exp; Exp; IDE StmtIDE) Block
+	private StatementNode parseStatementFor() {
+		Token tokenFor = tokenReader.getCurrent();
+		tokenReader.moveNext();
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		
+		Token identifier1 = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
+		tokenReader.matchTokenAndMoveOn(TokenType.ASSIGN);
+		StatementNode stm1 = new AssignNode(identifier1, parserExpression.parse());
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		
+		ExpressionNode condition = parserExpression.parse();
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		
+		Token identifier2 = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
+		StatementNode stm2 = parseStatementIdentifier(identifier2);
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+		
+		BlockNode bodyNode = this.parse(BlockNode.Type.FOR);
+		return new ForNode(tokenFor, stm1, condition, stm2, bodyNode);
+	}
+	
+	// Parse StmtIDE = Exp ; | += Exp ; | -= Exp ; | ++ ; | -- ;
+	private AssignNode parseStatementIdentifier(Token identifier) {
+		switch (tokenReader.getCurrent().getType()) {
+		case ASSIGN:
+			tokenReader.moveNext();
+			return new AssignNode(identifier, parserExpression.parse());
+		case ASSIGN_MINUS: case ASSIGN_PLUS:
+			return parseStatementIdentifierWithOperation(identifier, parserExpression.parse());
+		case INCR: case DECR:
+			Token oneToken = new Token(TokenType.NUMBER, "1", tokenReader.getCurrent().getIndex(), tokenReader.getCurrent().getRow(), tokenReader.getCurrent().getColumn());
+			ConstantNode one = new ConstantNode(oneToken);
+			return parseStatementIdentifierWithOperation(identifier, one);
+		default:
+			throw new FunwapException("Invalid statement, token: " + tokenReader.getCurrent() + ".", tokenReader.getCurrent());
+		}
+	}
+	
+	private AssignNode parseStatementIdentifierWithOperation(Token identifier, ExpressionNode expression) {
+		Token operation = tokenReader.getCurrent();
+		tokenReader.moveNext();
+		ExpressionNode operationNode = new BinaryOperationNode(operation, new VarNode(identifier), expression);
+		return new AssignNode(identifier, operationNode);	
+	}
+	
+	private ReturnNode parseStatementReturn() {
+		Token tokenReturn = tokenReader.getCurrent();
+		tokenReader.moveNext();
+
+		SyntacticNode rightNode = (tokenReader.isCurrentOfType(TokenType.DECLFUNC)
+				? parserDeclarationList.parseFunctionDeclaration(true)
+				: parserExpression.parse());
+		ReturnNode returnNode = new ReturnNode(tokenReturn, rightNode);
+
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		return returnNode;
+	}
+	
+	private PrintNode parseStatementPrintln() {
+		Token tokenPrint = tokenReader.getCurrent();
+		tokenReader.moveNext();
+		
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+
+		List<ExpressionNode> expList = new ArrayList<>();
+		expList.add(parserExpression.parse());
+		
+		while (tokenReader.isCurrentOfType(TokenType.COMMA)){
+			tokenReader.moveNext();
+			expList.add(parserExpression.parse());
+		}
+
+		PrintNode printNode = new PrintNode(tokenPrint, expList);
+
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		
+		return printNode;
+	}
+}

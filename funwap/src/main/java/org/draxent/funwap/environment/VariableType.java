@@ -1,15 +1,15 @@
 package org.draxent.funwap.environment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class VariableType {
 	private Eval.Type type;
-	private ArrayList<Eval.Type> functionParametersType;
+	private List<Eval.Type> functionParameterTypes;
 	private VariableType functionReturnType;
 
-	public VariableType(Eval.Type type, ArrayList<Eval.Type> functionParametersType, VariableType functionReturnType) {
+	public VariableType(Eval.Type type, List<Eval.Type> functionParameterTypes, VariableType functionReturnType) {
 		this.type = type;
-		this.functionParametersType = functionParametersType;
+		this.functionParameterTypes = functionParameterTypes;
 		this.functionReturnType = functionReturnType;
 	}
 
@@ -20,10 +20,16 @@ public class VariableType {
 	public Eval.Type getType() {
 		return type;
 	}
-
-	public ArrayList<Eval.Type> getFunctionParametersType() {
-		return functionParametersType;
-	}
+	
+	public int numFunctionParameterTypes()
+    {
+		return functionParameterTypes.size();
+    }
+	
+	public Eval.Type getFunctionParameterTypes(int index)
+    {
+		return functionParameterTypes.get(index);
+    }
 
 	public VariableType getFunctionReturnType() {
 		return functionReturnType;

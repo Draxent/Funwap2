@@ -202,7 +202,7 @@ public class ParserBlock {
 		tokenReader.moveNext();
 
 		SyntacticNode rightNode = (tokenReader.isCurrentOfType(TokenType.DECLFUNC)
-				? parserDeclarationList.parseFunctionDeclaration(true)
+				? parserDeclarationList.parseFunctionDeclaration(tokenReader.getCurrent())
 				: parserExpression.parse());
 		ReturnNode returnNode = new ReturnNode(tokenReturn, rightNode);
 

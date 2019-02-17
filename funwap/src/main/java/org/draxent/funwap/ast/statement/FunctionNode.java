@@ -24,6 +24,20 @@ public class FunctionNode extends StatementNode {
 		this(token, null, Arrays.asList(), bodyNode);
 	}
 	
+	public VariableType getReturnType() {
+		return returnType;
+	}
+	
+	public int numFormalParameters()
+    {
+		return formalParameters.size();
+    }
+	
+	public FormalParameter getFormalParameter(int index)
+    {
+		return formalParameters.get(index);
+    }
+
 	public BlockNode getBody() {
 		return bodyNode;
 	}

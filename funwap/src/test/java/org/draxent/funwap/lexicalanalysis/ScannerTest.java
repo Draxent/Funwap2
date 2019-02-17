@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ public class ScannerTest {
 			"	return a + b;\n" + 
 			"}";
 		Scanner scanner = new Scanner(source);
-		ArrayList<Token> tokens = scanner.tokenize();
+		List<Token> tokens = scanner.tokenize();
 		assertEquals(17, tokens.size());
 		assertEquals(TokenType.DECLFUNC, tokens.get(0).getType());
 		assertEquals(TokenType.IDENTIFIER, tokens.get(1).getType());

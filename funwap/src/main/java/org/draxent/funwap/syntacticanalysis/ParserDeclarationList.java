@@ -29,13 +29,13 @@ public class ParserDeclarationList {
 	public void parse(BlockNode blockNode) {
 		parseDeclaration(blockNode);
 
-		if (tokenReader.isCurrentOfType(TokenType.DECLVAR)) {
+		
+		if (!tokenReader.isEOF() && (tokenReader.isCurrentOfType(TokenType.DECLVAR) || tokenReader.isCurrentOfType(TokenType.DECLFUNC))) {
 			parse(blockNode);
 		}
 	}
 	
-	public FunctionNode parseFunctionDeclaration(boolean anonymous) {
-		Token identifier = (anonymous ? tokenReader.getCurrent() : tokenReader.matchToken(TokenType.IDENTIFIER));
+	public FunctionNode parseFunctionDeclaration(Token functionName) {
 		tokenReader.moveNext();
 		
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
@@ -45,12 +45,14 @@ public class ParserDeclarationList {
 		VariableType returnType = parseVariableType();
 		BlockNode bodyNode = parserBlock.parse(BlockNode.Type.BODY);
 
-		return new FunctionNode(identifier, returnType, formalParameters, bodyNode);		
+		return new FunctionNode(functionName, returnType, formalParameters, bodyNode);		
 	}
 
 	private void parseDeclaration(BlockNode blockNode) {
 		if (tokenReader.isCurrentOfType(TokenType.DECLFUNC)) {
-			blockNode.addChild(parseFunctionDeclaration(false));
+			tokenReader.moveNext();
+			Token functionName = tokenReader.matchToken(TokenType.IDENTIFIER);
+			blockNode.addChild(parseFunctionDeclaration(functionName));
 		} else {
 			parseNormalDeclaration(blockNode);
 		}
@@ -58,8 +60,8 @@ public class ParserDeclarationList {
 	
 	private void parseNormalDeclaration(BlockNode blockNode) {
 		tokenReader.moveNext();
-		ArrayList<DeclarationVariable> variables = new ArrayList<>();
-		parseDeclarationVariablesList(variables);
+		List<DeclarationVariable> variables = new ArrayList<>();
+		variables.add(parseDeclarationVariable());
 		VariableType type = parseVariableType();
 		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
 
@@ -97,11 +99,6 @@ public class ParserDeclarationList {
 		return new FormalParameter(identifier, type);
 	}
 
-	private void parseDeclarationVariablesList(ArrayList<DeclarationVariable> variables) {
-		DeclarationVariable var = parseDeclarationVariable();
-		variables.add(var);
-	}
-
 	private DeclarationVariable parseDeclarationVariable() {
 		Token identifier = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
 		if (tokenReader.isCurrentOfType(TokenType.ASSIGN)) {
@@ -113,11 +110,8 @@ public class ParserDeclarationList {
 	}
 
 	private VariableType parseVariableType() {
-		if (!tokenReader.getCurrent().isVariableType()) {
-			return null;
-		}
-
 		Eval.Type type = Eval.convertToken2EvalType(tokenReader.getCurrent());
+		tokenReader.moveNext();
 		if (type != Eval.Type.FUN) {
 			return new VariableType(type);
 		} else {
@@ -127,31 +121,31 @@ public class ParserDeclarationList {
 
 	private VariableType parseFunctionType(Eval.Type type) {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
-		ArrayList<Eval.Type> functionParametersType = parseFunctionParametersType();
+		List<Eval.Type> functionParameterTypes = parseFunctionParameterTypes();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 		VariableType functionReturnType = parseVariableType();
-		return new VariableType(type, functionParametersType, functionReturnType);
+		return new VariableType(type, functionParameterTypes, functionReturnType);
 	}
 
-	private ArrayList<Eval.Type> parseFunctionParametersType() {
+	private List<Eval.Type> parseFunctionParameterTypes() {
 		if (!tokenReader.getCurrent().isVariableType()) {
 			return null;
 		}
 
-		ArrayList<Eval.Type> functionParametersType = new ArrayList<>();
-		functionParametersType.add(Eval.convertToken2EvalType(tokenReader.getCurrent()));
+		List<Eval.Type> functionParameterTypes = new ArrayList<>();
+		functionParameterTypes.add(Eval.convertToken2EvalType(tokenReader.getCurrent()));
 		tokenReader.moveNext();
 
 		while (tokenReader.isCurrentOfType(TokenType.COMMA)) {
 			tokenReader.moveNext();
 
 			if (tokenReader.getCurrent().isVariableType() && !tokenReader.isCurrentOfType(TokenType.TYPEFUN)) {
-				functionParametersType.add(Eval.convertToken2EvalType(tokenReader.getCurrent()));
+				functionParameterTypes.add(Eval.convertToken2EvalType(tokenReader.getCurrent()));
 				tokenReader.moveNext();
 			} else {
 				throw new FunwapException(tokenReader.getCurrent() + " is not a valid type.", tokenReader.getCurrent());
 			}
 		}
-		return functionParametersType;
+		return functionParameterTypes;
 	}
 }

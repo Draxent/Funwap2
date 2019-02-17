@@ -22,7 +22,7 @@ public class Parser {
 		parserBlock = new ParserBlock(tokenReader, parserExpression, parserDeclarationList);	
 	}
 
-	public Parser(List<Token> tokens, ParserDeclarationList parserDeclarationList, ParserBlock parserBlock) {
+	Parser(List<Token> tokens, ParserDeclarationList parserDeclarationList, ParserBlock parserBlock) {
 		initTokenReader(tokens);
 		this.parserDeclarationList = parserDeclarationList;
 		this.parserBlock = parserBlock;	

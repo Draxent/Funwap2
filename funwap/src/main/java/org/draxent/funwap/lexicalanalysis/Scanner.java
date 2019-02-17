@@ -2,6 +2,7 @@ package org.draxent.funwap.lexicalanalysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,8 +27,8 @@ public class Scanner {
 		Arrays.sort(tokenValues, (TokenType a, TokenType b) -> a.getPriority() - b.getPriority());
 	}
 	
-	public ArrayList<Token> tokenize() {
-		ArrayList<Token> result = new ArrayList<>();
+	public List<Token> tokenize() {
+		List<Token> result = new ArrayList<>();
 		initIndexes();
 		
 		while (!isEOF()) {

@@ -20,4 +20,11 @@ public class DeclarationNode extends StatementNode  {
 		this(token, type, null);
 	}
 
+	public VariableType getVariableType() {
+		return type;
+	}
+
+	public ExpressionNode getValue() {
+		return valueNode;
+	}
 }

@@ -43,7 +43,8 @@ public class Token {
     
 	@Override
 	public String toString() {
-		return ("Token " + this.type + "(" + this.value + ") at " + this.index);
+		String valueToPrint = (this.type.isRegEx() ? String.format("(\"%s\")", this.value) : "");
+		return String.format("Token %s%s at %d:%d", this.type.name(), valueToPrint, this.row, this.column);
 	}
 
 	public TokenType getType() {

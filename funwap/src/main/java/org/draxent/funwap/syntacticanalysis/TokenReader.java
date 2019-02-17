@@ -40,7 +40,7 @@ public class TokenReader {
 
 	public Token matchToken(TokenType tokenType) {
 		if (!isCurrentOfType(tokenType)) {
-			throw new FunwapException(getCurrent() + " found has not expected type " + tokenType + ".", getCurrent());
+			throw new FunwapException(getCurrent() + " found has not expected type " + tokenType.name() + ".", getCurrent());
 		}
 		return getCurrent();
 	}

@@ -154,7 +154,7 @@ public class ParserExpression {
 		case FALSE:
 			return parseConstant();
 		default:
-			throw new FunwapException("Invalid factor, token: " + tokenReader.getCurrent() + ".", tokenReader.getCurrent());
+			throw new FunwapException("Invalid factor.", tokenReader.getCurrent());
 		}
 	}
 

@@ -27,10 +27,10 @@ public class ParserDeclarationList {
 	}
 
 	public void parse(BlockNode blockNode) {
-		parseDeclaration(blockNode);
-
-		
-		if (!tokenReader.isEOF() && (tokenReader.isCurrentOfType(TokenType.DECLVAR) || tokenReader.isCurrentOfType(TokenType.DECLFUNC))) {
+		boolean isDeclVar = !tokenReader.isEOF() && tokenReader.isCurrentOfType(TokenType.DECLVAR);
+		boolean isDeclFuncNotMain = !tokenReader.isEOF() && tokenReader.isCurrentOfType(TokenType.DECLFUNC) && !tokenReader.checkTokenTypeLookingAhead(TokenType.MAIN, 1);
+		if (isDeclVar || isDeclFuncNotMain) {
+			parseDeclaration(blockNode);
 			parse(blockNode);
 		}
 	}
@@ -60,8 +60,7 @@ public class ParserDeclarationList {
 	
 	private void parseNormalDeclaration(BlockNode blockNode) {
 		tokenReader.moveNext();
-		List<DeclarationVariable> variables = new ArrayList<>();
-		variables.add(parseDeclarationVariable());
+		List<DeclarationVariable> variables = parseDeclarationVariables();
 		VariableType type = parseVariableType();
 		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
 
@@ -70,6 +69,16 @@ public class ParserDeclarationList {
 					variable.getNodeValue());
 			blockNode.addChild(declarationNode);
 		}
+	}
+	
+	private List<DeclarationVariable> parseDeclarationVariables() {
+		List<DeclarationVariable> variables = new ArrayList<>();
+		variables.add(parseDeclarationVariable());
+		while (tokenReader.isCurrentOfType(TokenType.COMMA)) {
+			tokenReader.moveNext();
+			variables.add(parseDeclarationVariable());
+		}
+		return variables;
 	}
 	
 	private List<FormalParameter> parseFormalParams() {

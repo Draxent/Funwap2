@@ -66,19 +66,22 @@ public class ParserBlock {
 		case PRINTLN:
 			return parseStatementPrintln();
 		default:
-			throw new FunwapException("Invalid statement, token: " + tokenReader.getCurrent() + ".", tokenReader.getCurrent());
+			throw new FunwapException("Invalid statement.", tokenReader.getCurrent());
 		}
 	}
 	
 	private StatementNode parseStatementStartingWithIdentifier() {
 		Token identifier = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
+		StatementNode statementNode;
 		if (tokenReader.isCurrentOfType(TokenType.ROUNDBR_OPEN)) {
-			return parseStatementCall(identifier);
+			statementNode = parseStatementCall(identifier);
 		} else if (tokenReader.isCurrentOfType(TokenType.ASSIGN) && tokenReader.checkNextTokenType(TokenType.READLN)) {
-			return parseStatementReadln(identifier);
+			statementNode = parseStatementReadln(identifier);
 		} else {
-			return parseStatementIdentifier(identifier);
+			statementNode = parseStatementIdentifier(identifier);
 		}
+		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
+		return statementNode;
 	}
 	
 	private StatementNode parseStatementCall(Token identifier) {
@@ -180,21 +183,14 @@ public class ParserBlock {
 			tokenReader.moveNext();
 			return new AssignNode(identifier, parserExpression.parse());
 		case ASSIGN_MINUS: case ASSIGN_PLUS:
-			return parseStatementIdentifierWithOperation(identifier, parserExpression.parse());
+			return new AssignNode(identifier, new BinaryOperationNode(tokenReader.getCurrentAndMoveNext(), new VarNode(identifier), parserExpression.parse()));
 		case INCR: case DECR:
 			Token oneToken = new Token(TokenType.NUMBER, "1", tokenReader.getCurrent().getIndex(), tokenReader.getCurrent().getRow(), tokenReader.getCurrent().getColumn());
 			ConstantNode one = new ConstantNode(oneToken);
-			return parseStatementIdentifierWithOperation(identifier, one);
+			return new AssignNode(identifier, new BinaryOperationNode(tokenReader.getCurrentAndMoveNext(), new VarNode(identifier), one));
 		default:
-			throw new FunwapException("Invalid statement, token: " + tokenReader.getCurrent() + ".", tokenReader.getCurrent());
+			throw new FunwapException("Invalid statement.", tokenReader.getCurrent());
 		}
-	}
-	
-	private AssignNode parseStatementIdentifierWithOperation(Token identifier, ExpressionNode expression) {
-		Token operation = tokenReader.getCurrent();
-		tokenReader.moveNext();
-		ExpressionNode operationNode = new BinaryOperationNode(operation, new VarNode(identifier), expression);
-		return new AssignNode(identifier, operationNode);	
 	}
 	
 	private ReturnNode parseStatementReturn() {

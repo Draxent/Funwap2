@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 
 import org.draxent.funwap.Useful;
 
-public class Funwap implements Runnable {
+public class IDE implements Runnable {
 	private JFrame frame;
 
 	public void run() {

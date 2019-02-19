@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.draxent.funwap.Useful;
+import org.draxent.funwap.gui.ast.GraphicASTDialog;
 
 public class IDE implements Runnable {
 	private JFrame frame;
@@ -27,14 +28,18 @@ public class IDE implements Runnable {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		GraphicASTDialog dialog = new GraphicASTDialog(frame);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 	}
 	
 	private void setDefaultFontSize() {
-		UIManager.put("Menu.font", Useful.defaultFont);
-		UIManager.put("MenuItem.font", Useful.defaultFont);
-		UIManager.put("TextArea.font", Useful.defaultFont);
-		UIManager.put("TitledBorder.font", Useful.defaultFont);
-		UIManager.put("Label.font", Useful.defaultFont);
-		UIManager.put("Button.font", Useful.defaultFont);
+		UIManager.put("Menu.font", Useful.DEFAULT_FONT);
+		UIManager.put("MenuItem.font", Useful.DEFAULT_FONT);
+		UIManager.put("TextArea.font", Useful.DEFAULT_FONT);
+		UIManager.put("TitledBorder.font", Useful.DEFAULT_FONT);
+		UIManager.put("Label.font", Useful.DEFAULT_FONT);
+		UIManager.put("Button.font", Useful.DEFAULT_FONT);
 	}
 }

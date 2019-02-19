@@ -1,5 +1,6 @@
 package org.draxent.funwap.ast.statement;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.lexicalanalysis.Token;
@@ -14,6 +15,10 @@ public class DeclarationNode extends StatementNode  {
 		
 		this.type = type;
 		this.valueNode = valueNode;
+	}
+	
+	public NodeType getNodeType() {
+		return NodeType.DECLARATION;
 	}
 	
 	public DeclarationNode(Token token, VariableType type) {

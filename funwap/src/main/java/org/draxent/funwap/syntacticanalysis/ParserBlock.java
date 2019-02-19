@@ -33,7 +33,7 @@ public class ParserBlock {
 		this.parserDeclarationList = parserDeclarationList;
 	}
 	
-	public BlockNode parse(BlockNode.Type blockType) {
+	public BlockNode parse(BlockNode.BlockType blockType) {
 		Token token = tokenReader.matchTokenAndMoveOn(TokenType.CURLYBR_OPEN);
 		BlockNode blockNode = new BlockNode(token, blockType);
 
@@ -131,11 +131,11 @@ public class ParserBlock {
 		ExpressionNode conditionNode = parserExpression.parse();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 		
-		BlockNode thenNode = this.parse(BlockNode.Type.THEN);
+		BlockNode thenNode = this.parse(BlockNode.BlockType.THEN);
 		BlockNode elseNode = null;
 		if (tokenReader.isCurrentOfType(TokenType.ELSE)) {
 			tokenReader.moveNext();
-			elseNode = this.parse(BlockNode.Type.ELSE);
+			elseNode = this.parse(BlockNode.BlockType.ELSE);
 		}
 		return new IfNode(tokenIf, conditionNode, thenNode, elseNode);
 	}
@@ -148,7 +148,7 @@ public class ParserBlock {
 		ExpressionNode conditionNode = parserExpression.parse();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 		
-		BlockNode bodyNode = this.parse(BlockNode.Type.WHILE);
+		BlockNode bodyNode = this.parse(BlockNode.BlockType.WHILE);
 		return new WhileNode(tokenWhile, conditionNode, bodyNode);
 	}
 	
@@ -172,7 +172,7 @@ public class ParserBlock {
 		
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 		
-		BlockNode bodyNode = this.parse(BlockNode.Type.FOR);
+		BlockNode bodyNode = this.parse(BlockNode.BlockType.FOR);
 		return new ForNode(tokenFor, stm1, condition, stm2, bodyNode);
 	}
 	

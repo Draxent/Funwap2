@@ -2,6 +2,7 @@ package org.draxent.funwap.ast.statement;
 
 import java.util.List;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -15,6 +16,10 @@ public class CallNode extends StatementNode {
 		
 		this.actualParameters = actualParameters;
 		this.isStatement = isStatement;
+	}
+	
+	public NodeType getNodeType() {
+		return NodeType.CALL;
 	}
 
 	public int numActualParameters()

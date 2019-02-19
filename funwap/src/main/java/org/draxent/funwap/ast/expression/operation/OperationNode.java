@@ -1,10 +1,11 @@
 package org.draxent.funwap.ast.expression.operation;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public abstract class OperationNode extends ExpressionNode {
-	public enum Type {
+	public enum OperationType {
 	    OR,
 	    AND,
 	    EQUAL,
@@ -20,34 +21,38 @@ public abstract class OperationNode extends ExpressionNode {
 	    DIV
 	}
 
-	private Type operationType;
+	private OperationType operationType;
 	
 	public OperationNode(Token token) {
 		super(token);
 		this.operationType = convertTokenIntoOperationType();
 	}
+	
+	public NodeType getNodeType() {
+		return NodeType.OPERATION;
+	}
 
-	public Type getOperationType() {
+	public OperationType getOperationType() {
 		return operationType;
 	}
 	
-	private Type convertTokenIntoOperationType() {
+	private OperationType convertTokenIntoOperationType() {
 		switch(getToken().getType()) {
-		case OR: return Type.OR;
-		case AND: return Type.AND;
-		case EQUAL: return Type.EQUAL;
-		case INEQUAL: return Type.INEQUAL;
-		case GREATEREQ: return Type.GREATEREQ;
-		case LESSEQ: return Type.LESSEQ;
-		case NOT: return Type.NOT;
-		case GREATER: return Type.GREATER;
-		case LESS: return Type.LESS;
-		case ASSIGN_PLUS: return Type.PLUS;
-		case PLUS: return Type.PLUS;
-		case ASSIGN_MINUS: return Type.MINUS;
-		case MINUS: return Type.MINUS;
-		case MUL: return Type.MUL;
-		case DIV: return Type.DIV;
+		case OR: return OperationType.OR;
+		case AND: return OperationType.AND;
+		case EQUAL: return OperationType.EQUAL;
+		case INEQUAL: return OperationType.INEQUAL;
+		case GREATEREQ: return OperationType.GREATEREQ;
+		case LESSEQ: return OperationType.LESSEQ;
+		case NOT: return OperationType.NOT;
+		case GREATER: return OperationType.GREATER;
+		case LESS: return OperationType.LESS;
+		case ASSIGN_PLUS: return OperationType.PLUS;
+		case PLUS: return OperationType.PLUS;
+		case ASSIGN_MINUS: return OperationType.MINUS;
+		case MINUS: return OperationType.MINUS;
+		case MUL: return OperationType.MUL;
+		case DIV: return OperationType.DIV;
 		default:
 			return null;
 		}

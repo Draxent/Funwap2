@@ -29,7 +29,7 @@ public class Parser {
 	}
 
 	public BlockNode parse() {
-		BlockNode programNode = new BlockNode(null, BlockNode.Type.PROGRAM);
+		BlockNode programNode = new BlockNode(null, BlockNode.BlockType.PROGRAM);
 
 		parserDeclarationList.parse(programNode);
 		parseMain(programNode);
@@ -43,7 +43,7 @@ public class Parser {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 
-		BlockNode bodyNode = parserBlock.parse(BlockNode.Type.MAIN);
+		BlockNode bodyNode = parserBlock.parse(BlockNode.BlockType.MAIN);
 
 		FunctionNode functionNode = new FunctionNode(main, bodyNode);
 		blockNode.addChild(functionNode);

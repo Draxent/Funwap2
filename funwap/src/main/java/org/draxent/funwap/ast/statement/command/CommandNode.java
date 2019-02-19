@@ -1,5 +1,6 @@
 package org.draxent.funwap.ast.statement.command;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.statement.StatementNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -9,4 +10,7 @@ public abstract class CommandNode extends StatementNode {
 		super(token);
 	}
 
+	public NodeType getNodeType() {
+		return NodeType.COMMAND;
+	}
 }

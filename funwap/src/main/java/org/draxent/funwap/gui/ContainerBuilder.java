@@ -46,7 +46,7 @@ public class ContainerBuilder {
 
 	private JScrollPane buildScrollPaneCode() {
 		textAreaCode = new RSyntaxTextArea();
-		textAreaCode.setFont(Useful.defaultFont);
+		textAreaCode.setFont(Useful.DEFAULT_FONT);
 		textAreaCode.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		textAreaCode.setCodeFoldingEnabled(true);
 		RTextScrollPane scrollPaneCode = new RTextScrollPane(textAreaCode);

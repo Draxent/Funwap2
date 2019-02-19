@@ -3,11 +3,12 @@ package org.draxent.funwap.ast.statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class BlockNode extends StatementNode {
 
-	public enum Type
+	public enum BlockType
 	{
 		PROGRAM, // Used for the block of the entire program.
 		MAIN, // Used for the block of the main function.
@@ -18,17 +19,21 @@ public class BlockNode extends StatementNode {
 		BODY
 	};
 	
-	private Type type;
+	private BlockType type;
 	private List<StatementNode> children;
 	
-	public BlockNode(Token token, Type type) {
+	public BlockNode(Token token, BlockType type) {
 		super(token);
 		
 		this.type = type;
 		this.children = new ArrayList<>();
 	}
 	
-	public Type getType()
+	public NodeType getNodeType() {
+		return NodeType.BLOCK;
+	}
+	
+	public BlockType getBlockType()
     {
 		return type;
     }

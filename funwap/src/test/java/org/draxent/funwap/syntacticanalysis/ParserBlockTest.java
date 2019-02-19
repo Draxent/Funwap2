@@ -90,7 +90,7 @@ public class ParserBlockTest {
 		AssignNode assignNode = (AssignNode) testStatement(tokenTypes, n, 1, 1, AssignNode.class);
 		assertEquals(BinaryOperationNode.class, assignNode.getAssignedValue().getClass());
 		BinaryOperationNode opNode = (BinaryOperationNode) assignNode.getAssignedValue();
-		assertEquals(OperationNode.Type.PLUS, opNode.getOperationType());
+		assertEquals(OperationNode.OperationType.PLUS, opNode.getOperationType());
 		assertEquals(VarNode.class, opNode.getLeftExpression().getClass());
 		assertEquals(ConstantNode.class, opNode.getRightExpression().getClass());
 	}
@@ -198,7 +198,7 @@ public class ParserBlockTest {
 		TokenReader tokenReader = new TokenReader(tokens);
 		when(parseExpression.parse()).thenReturn(parseExpressionReturn);
 		// Act
-		BlockNode n = new ParserBlock(tokenReader, parseExpression, parserDeclarationList).parse(BlockNode.Type.BODY);
+		BlockNode n = new ParserBlock(tokenReader, parseExpression, parserDeclarationList).parse(BlockNode.BlockType.BODY);
 		// Assert
 		verify(parserDeclarationList, times(timesParseDeclaration)).parse(any());
 		verify(parseExpression, times(timesParseExpression)).parse();

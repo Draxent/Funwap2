@@ -27,7 +27,7 @@ public class ParserTest {
 		// Arrange
 		parserDeclarationList = mock(ParserDeclarationList.class);
 		parserBlock = mock(ParserBlock.class);
-		when(parserBlock.parse(BlockNode.Type.MAIN)).thenReturn(new BlockNode(null, BlockNode.Type.MAIN));
+		when(parserBlock.parse(BlockNode.BlockType.MAIN)).thenReturn(new BlockNode(null, BlockNode.BlockType.MAIN));
 		// Act
 		BlockNode n = new Parser(Arrays.asList(
 				utils.createToken(TokenType.DECLFUNC),
@@ -39,10 +39,10 @@ public class ParserTest {
 		), parserDeclarationList, parserBlock).parse();
 		// Assert
 		verify(parserDeclarationList).parse(any());
-		verify(parserBlock).parse(BlockNode.Type.MAIN);
+		verify(parserBlock).parse(BlockNode.BlockType.MAIN);
 		assertEquals(1, n.numChildren());
 		assertEquals(FunctionNode.class, n.getChild(0).getClass());
 		BlockNode childBlock = ((FunctionNode) n.getChild(0)).getBody();
-		assertEquals(BlockNode.Type.MAIN, childBlock.getType());
+		assertEquals(BlockNode.BlockType.MAIN, childBlock.getBlockType());
 	}
 }

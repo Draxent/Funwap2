@@ -3,6 +3,7 @@ package org.draxent.funwap.ast.statement;
 import java.util.Arrays;
 import java.util.List;
 
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -22,6 +23,10 @@ public class FunctionNode extends StatementNode {
 	
 	public FunctionNode(Token token, BlockNode bodyNode) {
 		this(token, null, Arrays.asList(), bodyNode);
+	}
+	
+	public NodeType getNodeType() {
+		return NodeType.FUNCTION;
 	}
 	
 	public VariableType getReturnType() {

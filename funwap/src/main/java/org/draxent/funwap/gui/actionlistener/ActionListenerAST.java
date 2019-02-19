@@ -9,6 +9,8 @@ import javax.swing.JTextArea;
 
 import org.draxent.funwap.FunwapException;
 import org.draxent.funwap.ast.statement.BlockNode;
+import org.draxent.funwap.gui.SimpleDialog;
+import org.draxent.funwap.gui.ast.GraphicASTDialog;
 import org.draxent.funwap.lexicalanalysis.Scanner;
 import org.draxent.funwap.lexicalanalysis.Token;
 import org.draxent.funwap.syntacticanalysis.Parser;
@@ -25,22 +27,26 @@ public class ActionListenerAST implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent ev) {
-		if (textAreaCode.getText().isEmpty()) {
-			textAreaConsole.append("Cannot scan empty text!\r\n");
-			return;
-		}
+		GraphicASTDialog dialog = new GraphicASTDialog(frame);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 		
-		List<Token> tokens = new Scanner(textAreaCode.getText()).tokenize();
-		textAreaConsole.append("Scanner phase proceduced the following tokens:\r\n");
-		for (Token token : tokens) {
-			textAreaConsole.append("  - " + token.toString() + "\r\n");
-		}
-		try {
-			BlockNode programBlock = new Parser(tokens).parse();
-		} catch (FunwapException e) {
-			textAreaConsole.append("Error during the parsing phase:\r\n");
-			textAreaConsole.append("  - " + e.getMessage() + "\r\n");
-			textAreaConsole.append("  - " + e.getToken() + "\r\n");
-		}
+//		if (textAreaCode.getText().isEmpty()) {
+//			textAreaConsole.append("Cannot scan empty text!\r\n");
+//			return;
+//		}
+//		
+//		List<Token> tokens = new Scanner(textAreaCode.getText()).tokenize();
+//		textAreaConsole.append("Scanner phase proceduced the following tokens:\r\n");
+//		for (Token token : tokens) {
+//			textAreaConsole.append("  - " + token.toString() + "\r\n");
+//		}
+//		try {
+//			BlockNode programBlock = new Parser(tokens).parse();
+//		} catch (FunwapException e) {
+//			textAreaConsole.append("Error during the parsing phase:\r\n");
+//			textAreaConsole.append("  - " + e.getMessage() + "\r\n");
+//			textAreaConsole.append("  - " + e.getToken() + "\r\n");
+//		}
 	}
 }

@@ -1,6 +1,7 @@
 package org.draxent.funwap.ast.statement;
 
 import org.draxent.funwap.ast.SyntacticNode;
+import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class AssignNode extends StatementNode {
@@ -11,6 +12,10 @@ public class AssignNode extends StatementNode {
 		super(token);
 		
 		this.assignedValueNode = assignedValueNode;
+	}
+	
+	public NodeType getNodeType() {
+		return NodeType.ASSIGN;
 	}
 
 	public SyntacticNode getAssignedValue() {

@@ -1,62 +1,153 @@
 package org.draxent.funwap.gui.ast;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.draxent.funwap.ast.SyntacticNode;
-import org.draxent.funwap.ast.statement.BlockNode;
-import org.draxent.funwap.ast.statement.FunctionNode;
-import org.draxent.funwap.ast.statement.StatementNode;
-import org.draxent.funwap.gui.ast.node.GraphicASTBlockNode;
-import org.draxent.funwap.gui.ast.node.GraphicASTFunctionNode;
-import org.draxent.funwap.gui.ast.node.GraphicASTNode;
 
 public class GraphicAST {
     // Space to skip horizontally and vertically between siblings and between generations
     private final int HOFFSET = 5;
     private final int VOFFSET = 10;
     
-	private Graphics g;
-	private int x;
-	private int y;
-	private SyntacticNode node;
-    
-    public GraphicAST(Graphics g, int x, int y, SyntacticNode node) {
+    private Graphics g;
+    private Rectangle treeScreenArea;
+    private GraphicASTNode gRoot;
+    private List<GraphicAST> gSubTrees;
+	
+    public GraphicAST(Graphics g, SyntacticNode root) {
     	this.g = g;
-    	this.x = x;
-    	this.y = y;
-    	this.node = node;
+    	this.treeScreenArea = new Rectangle(0, 0, 0, 0);
+    	this.gRoot = new GraphicASTNode(g, root);
+    	
+    	this.gSubTrees = new ArrayList<>();
+		for (int i = 0; i < root.numChildren(); i++) {
+			this.gSubTrees.add(new GraphicAST(g, root.getChild(i)));
+		}	
     }
     
-	public Rectangle draw() {
-		switch(node.getNodeType()) {
-		case BLOCK:
-			return drawASTWithRootBlockNode();
-		case FUNCTION:
-			return drawASTWithRootFunctionalNode();
-		default:
-			return null;
-		}
+    public int getX() {
+    	return treeScreenArea.x;
+    }
+    
+    public void setX(int x) {
+    	treeScreenArea.x = x;
+    }
+    
+    public int getY() {
+    	return treeScreenArea.y;
+    }
+    
+    public void setY(int y) {
+    	treeScreenArea.y = y;
+    }
+    
+    public int getWidth() {
+    	return treeScreenArea.width;
+    }
+    
+    public void setWidth(int width) {
+    	treeScreenArea.width = width;
+    }
+
+    public int getHeight() {
+    	return treeScreenArea.height;
+    }
+    
+    public void setHeight(int height) {
+    	treeScreenArea.height = height;
+    }
+    
+    public int getBottom() {
+    	return getY() + getHeight();
+    }
+    
+    public Point getNodeCenter() {
+        return new Point(getX() + getWidth()/2, getY() + gRoot.getDimension().height / 2);
+    }
+    
+    public void moveTree(int transX, int transY)
+	{
+		// Increase the coordinate of the treeArea
+    	setX(getX() + transX);
+    	setY(getY() + transY);
+
+		// Recursively do the same thing for all the children
+    	for (GraphicAST gSubTree : gSubTrees) {
+    		gSubTree.moveTree(transX, transY);
+    	}
 	}
+    
+    public void computeTreeStructure() {
+    	gRoot.computeDimension();
+    	Dimension nodeDimension = gRoot.getDimension();
+    	
+        int posX = 0;
+        for (GraphicAST gSubTree : gSubTrees) {
+        	// Arrange this child's subtree
+        	gSubTree.setX(posX);
+        	gSubTree.setY(getY() + nodeDimension.height + VOFFSET);
+        	gSubTree.computeTreeStructure();
+        	
+        	// See if this increases the height of the tree
+        	if (getBottom() < gSubTree.getBottom()) {
+        		setHeight(gSubTree.getBottom() - getY());
+        	}
+        	
+        	 // Allow room before the next sibling
+        	posX += gSubTree.getWidth() + HOFFSET;
+        }
+        
+        if (gSubTrees.size() > 0)
+        {
+            // Remove the spacing after the last child
+            posX -= HOFFSET;
+            setWidth(posX - getX());
+        }
+        else
+        {
+            // It has no children so the treeArea is equal to the node's size
+            setWidth(nodeDimension.width);
+            setHeight(nodeDimension.height);
+        }
+        
+        // See if this node is wider than the subtree under it
+        if (nodeDimension.width > getWidth())
+        {
+            // Center the subtrees under this node moving all its children of translX
+            int translX = (nodeDimension.width - getWidth()) / 2;
+            for (GraphicAST gSubTree : gSubTrees) {
+            	gSubTree.moveTree(translX, 0);
+            }
+            // The Width property of the TreeArea is equal to the node's width since it dominates over its subtree
+            setWidth(nodeDimension.width);
+        }
+    }
+    
+    public void draw() {
+        drawArcs();
+        drawNodes();
+    }
+    
+    private void drawArcs() {
+    	for (GraphicAST gSubTree : gSubTrees) {
+            drawLine(getNodeCenter(), gSubTree.getNodeCenter());
+            gSubTree.drawArcs();
+        }
+    }
+    
+    private void drawNodes() {
+    	gRoot.draw(getNodeCenter().x, getNodeCenter().y);
+        for (GraphicAST gSubTree : gSubTrees) {
+        	gSubTree.drawNodes();
+        }
+    }
 	
-	private void drawLine(Rectangle r1, Rectangle r2) {
-		g.drawLine(r1.x + r1.width/2, r1.y + r1.height, r2.x + r2.width/2, r2.y);
-	}	
-	
-	private Rectangle drawASTWithRootBlockNode() {
-		BlockNode blockNode = (BlockNode) node;
-		Rectangle r1 = new GraphicASTBlockNode(g, x, y, blockNode).draw();
-		for (int i = 0; i < blockNode.numChildren(); i++) {
-			StatementNode child = blockNode.getChild(i);
-			Rectangle r2 = new GraphicAST(g, x, y + 100, child).draw();
-			drawLine(r1, r2);
-		}		
-		return r1;
-	}
-	
-	private Rectangle drawASTWithRootFunctionalNode() {
-		FunctionNode functionNode = (FunctionNode) node;
-		Rectangle r1 = new GraphicASTFunctionNode(g, x, y, functionNode).draw();
-		return r1;
+	private void drawLine(Point p1, Point p2) {
+		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 	}
 }

@@ -52,7 +52,7 @@ public class ParserDeclarationList {
 		if (tokenReader.isCurrentOfType(TokenType.DECLFUNC)) {
 			tokenReader.moveNext();
 			Token functionName = tokenReader.matchToken(TokenType.IDENTIFIER);
-			blockNode.addChild(parseFunctionDeclaration(functionName));
+			blockNode.addStatement(parseFunctionDeclaration(functionName));
 		} else {
 			parseNormalDeclaration(blockNode);
 		}
@@ -67,7 +67,7 @@ public class ParserDeclarationList {
 		for (DeclarationVariable variable : variables) {
 			DeclarationNode declarationNode = new DeclarationNode(variable.getIdentifier(), type,
 					variable.getNodeValue());
-			blockNode.addChild(declarationNode);
+			blockNode.addStatement(declarationNode);
 		}
 	}
 	

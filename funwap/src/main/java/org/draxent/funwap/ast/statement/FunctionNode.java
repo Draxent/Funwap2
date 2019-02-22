@@ -1,17 +1,19 @@
 package org.draxent.funwap.ast.statement;
 
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
 
-import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class FunctionNode extends StatementNode {
-
+	private static final Font FUNCTION_FONT = new Font(SANS_SERIF, Font.ITALIC, 20);
+	
 	private VariableType returnType;
 	private List<FormalParameter> formalParameters;
 	private BlockNode bodyNode;
+	private String title;
 
 	public FunctionNode(Token token, VariableType returnType, List<FormalParameter> formalParameters, BlockNode bodyNode) {
 		super(token);
@@ -19,6 +21,8 @@ public class FunctionNode extends StatementNode {
 		this.returnType = returnType;
 		this.formalParameters = formalParameters;
 		this.bodyNode = bodyNode;
+		this.title = null;
+		addChildIfNotNull(bodyNode);
 	}
 	
 	public FunctionNode(Token token, BlockNode bodyNode) {
@@ -29,17 +33,38 @@ public class FunctionNode extends StatementNode {
 		return NodeType.FUNCTION;
 	}
 	
+	public Font getFont() { 
+		return FUNCTION_FONT;
+	}
+	
+	public String getTitle() {
+		if (title != null) {
+			return title;
+		}
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(getToken().getValue());
+		stringBuilder.append(" (");
+		for (int i = 0; i < numFormalParameters(); i++) {
+			if (i > 0) {
+				stringBuilder.append(", ");
+			}
+			stringBuilder.append(getFormalParameter(i).getType());
+		}
+		stringBuilder.append(")");
+		title = stringBuilder.toString();
+		return title;
+	}
+	
 	public VariableType getReturnType() {
 		return returnType;
 	}
 	
-	public int numFormalParameters()
-    {
+	public int numFormalParameters() {
 		return formalParameters.size();
     }
 	
-	public FormalParameter getFormalParameter(int index)
-    {
+	public FormalParameter getFormalParameter(int index) {
 		return formalParameters.get(index);
     }
 

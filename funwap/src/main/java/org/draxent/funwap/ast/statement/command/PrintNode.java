@@ -15,20 +15,20 @@ public class PrintNode extends CommandNode {
 		super(token);
 		
 		this.expressionNodes = expressionNodes;
+		for (ExpressionNode exp: expressionNodes) {
+			this.children.add(exp);
+		}
 	}
 	
 	public PrintNode(Token token, ExpressionNode expressionNode) {
 		this(token, Arrays.asList(expressionNode));
 	}
 	
-	public int numExpressions()
-    {
+	public int numExpressions() {
 		return expressionNodes.size();
     }
 	
-	public ExpressionNode getExpression(int index)
-    {
+	public ExpressionNode getExpression(int index) {
 		return expressionNodes.get(index);
     }
-
 }

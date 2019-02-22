@@ -40,9 +40,9 @@ public class ParserTest {
 		// Assert
 		verify(parserDeclarationList).parse(any());
 		verify(parserBlock).parse(BlockNode.BlockType.MAIN);
-		assertEquals(1, n.numChildren());
-		assertEquals(FunctionNode.class, n.getChild(0).getClass());
-		BlockNode childBlock = ((FunctionNode) n.getChild(0)).getBody();
+		assertEquals(1, n.numStatement());
+		assertEquals(FunctionNode.class, n.getStatement(0).getClass());
+		BlockNode childBlock = ((FunctionNode) n.getStatement(0)).getBody();
 		assertEquals(BlockNode.BlockType.MAIN, childBlock.getBlockType());
 	}
 }

@@ -46,7 +46,7 @@ public class ParserBlock {
 	
 	private void parseStatementList(BlockNode blockNode) {
 		if (tokenReader.getCurrent().isStatement()) {
-			blockNode.addChild(parseStatement());
+			blockNode.addStatement(parseStatement());
 			parseStatementList(blockNode);
 		}
 	}

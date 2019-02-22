@@ -46,7 +46,7 @@ public class Parser {
 		BlockNode bodyNode = parserBlock.parse(BlockNode.BlockType.MAIN);
 
 		FunctionNode functionNode = new FunctionNode(main, bodyNode);
-		blockNode.addChild(functionNode);
+		blockNode.addStatement(functionNode);
 	}
 	
 	private void initTokenReader(List<Token> tokens) {

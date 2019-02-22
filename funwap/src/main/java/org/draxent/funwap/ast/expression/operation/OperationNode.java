@@ -1,10 +1,14 @@
 package org.draxent.funwap.ast.expression.operation;
 
+import java.awt.Font;
+
 import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public abstract class OperationNode extends ExpressionNode {
+	private static final Font OPERATION_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	
 	public enum OperationType {
 	    OR,
 	    AND,
@@ -34,6 +38,14 @@ public abstract class OperationNode extends ExpressionNode {
 
 	public OperationType getOperationType() {
 		return operationType;
+	}
+	
+	public Font getFont() { 
+		return OPERATION_FONT;
+	}
+	
+	public String getTitle() {
+		return getToken().getValue();
 	}
 	
 	private OperationType convertTokenIntoOperationType() {

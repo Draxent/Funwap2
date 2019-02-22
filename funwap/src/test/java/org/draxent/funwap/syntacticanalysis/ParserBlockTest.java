@@ -202,8 +202,8 @@ public class ParserBlockTest {
 		// Assert
 		verify(parserDeclarationList, times(timesParseDeclaration)).parse(any());
 		verify(parseExpression, times(timesParseExpression)).parse();
-		assertEquals(1, n.numChildren());
-		assertEquals(classType, n.getChild(0).getClass());	
-		return n.getChild(0);
+		assertEquals(1, n.numStatement());
+		assertEquals(classType, n.getStatement(0).getClass());	
+		return n.getStatement(0);
 	}
 }

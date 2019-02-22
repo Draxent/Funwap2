@@ -1,5 +1,6 @@
 package org.draxent.funwap.ast.statement;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,8 @@ import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class BlockNode extends StatementNode {
-
+	private static final Font BLOCK_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	
 	public enum BlockType
 	{
 		PROGRAM, // Used for the block of the entire program.
@@ -20,36 +22,41 @@ public class BlockNode extends StatementNode {
 	};
 	
 	private BlockType type;
-	private List<StatementNode> children;
+	private List<StatementNode> statementList;
 	
 	public BlockNode(Token token, BlockType type) {
 		super(token);
 		
 		this.type = type;
-		this.children = new ArrayList<>();
+		this.statementList = new ArrayList<>();
 	}
 	
 	public NodeType getNodeType() {
 		return NodeType.BLOCK;
 	}
 	
-	public BlockType getBlockType()
-    {
+	public Font getFont() { 
+		return BLOCK_FONT;
+	}
+	
+	public String getTitle() {
+		return getBlockType().name();
+	}
+	
+	public BlockType getBlockType() {
 		return type;
     }
 	
-	public int numChildren()
-    {
-		return children.size();
+	public int numStatement() {
+		return statementList.size();
     }
 	
-	public StatementNode getChild(int index)
-    {
-		return children.get(index);
+	public StatementNode getStatement(int index) {
+		return statementList.get(index);
     }
 	
-	public void addChild(StatementNode child)
-    {
+	public void addStatement(StatementNode child) {
+		statementList.add(child);
 		children.add(child);
     }
 }

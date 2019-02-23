@@ -21,6 +21,10 @@ public class ForNode extends CommandNode {
 		this.conditionNode = conditionNode;
 		this.stmNode2 = stmNode2;
 		this.bodyNode = bodyNode;
+		addChildIfNotNull(stmNode1);
+		addChildIfNotNull(conditionNode);
+		addChildIfNotNull(stmNode2);
+		addChildIfNotNull(bodyNode);
 	}
 
 	public StatementNode getFirstStatement() {

@@ -18,6 +18,9 @@ public class CallNode extends StatementNode {
 		
 		this.actualParameters = actualParameters;
 		this.isStatement = isStatement;
+		for (ExpressionNode exp: actualParameters) {
+			this.children.add(exp);
+		}
 	}
 	
 	public NodeType getNodeType() {

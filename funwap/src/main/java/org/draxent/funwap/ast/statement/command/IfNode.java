@@ -16,6 +16,9 @@ public class IfNode extends CommandNode {
 		this.conditionNode = conditionNode;
 		this.thenNode = thenNode;
 		this.elseNode = elseNode;
+		addChildIfNotNull(conditionNode);
+		addChildIfNotNull(thenNode);
+		addChildIfNotNull(elseNode);
 	}
 	
 	public IfNode(Token token, ExpressionNode conditionNode, BlockNode thenNode) {

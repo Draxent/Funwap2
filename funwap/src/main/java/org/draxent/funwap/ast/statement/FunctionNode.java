@@ -13,7 +13,6 @@ public class FunctionNode extends StatementNode {
 	private VariableType returnType;
 	private List<FormalParameter> formalParameters;
 	private BlockNode bodyNode;
-	private String title;
 
 	public FunctionNode(Token token, VariableType returnType, List<FormalParameter> formalParameters, BlockNode bodyNode) {
 		super(token);
@@ -21,7 +20,6 @@ public class FunctionNode extends StatementNode {
 		this.returnType = returnType;
 		this.formalParameters = formalParameters;
 		this.bodyNode = bodyNode;
-		this.title = null;
 		addChildIfNotNull(bodyNode);
 	}
 	
@@ -38,10 +36,6 @@ public class FunctionNode extends StatementNode {
 	}
 	
 	public String getTitle() {
-		if (title != null) {
-			return title;
-		}
-		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(getToken().getValue());
 		stringBuilder.append(" (");
@@ -52,8 +46,7 @@ public class FunctionNode extends StatementNode {
 			stringBuilder.append(getFormalParameter(i).getType());
 		}
 		stringBuilder.append(")");
-		title = stringBuilder.toString();
-		return title;
+		return stringBuilder.toString();
 	}
 	
 	public VariableType getReturnType() {

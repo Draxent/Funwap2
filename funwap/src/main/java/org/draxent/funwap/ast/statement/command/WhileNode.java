@@ -14,6 +14,8 @@ public class WhileNode extends CommandNode {
 		
 		this.conditionNode = conditionNode;
 		this.bodyNode = bodyNode;
+		addChildIfNotNull(conditionNode);
+		addChildIfNotNull(bodyNode);
 	}
     
 	public ExpressionNode getCondition() {

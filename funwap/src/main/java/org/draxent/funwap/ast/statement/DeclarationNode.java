@@ -18,6 +18,7 @@ public class DeclarationNode extends StatementNode  {
 		
 		this.type = type;
 		this.valueNode = valueNode;
+		addChildIfNotNull(valueNode);
 	}
 
 	public DeclarationNode(Token token, VariableType type) {
@@ -33,7 +34,7 @@ public class DeclarationNode extends StatementNode  {
 	}
 	
 	public String getTitle() {
-		return getToken().getValue();
+		return type.getTitle() + " " + getToken().getValue();
 	}
 	
 	public VariableType getVariableType() {

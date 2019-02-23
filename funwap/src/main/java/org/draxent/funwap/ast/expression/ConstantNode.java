@@ -17,15 +17,11 @@ public class ConstantNode extends ExpressionNode {
 	}
 	
 	public NodeType getNodeType() {
-		if (getToken().getType().equals(TokenType.STRING)) {
-			return NodeType.STRING;	
-		} else {
-			return NodeType.NUMBER;	
-		}
+		return NodeType.CONSTANT;
 	}
 	
 	public Font getFont() {
-		if (getNodeType().equals(NodeType.STRING)) {
+		if (getToken().getType().equals(TokenType.STRING)) {
 			return STRING_FONT;
 		} else {
 			return NUMBER_FONT;

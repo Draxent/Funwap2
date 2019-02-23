@@ -30,53 +30,11 @@ public class GraphicAST {
 		}	
     }
     
-    public int getX() {
-    	return treeScreenArea.x;
-    }
-    
-    public void setX(int x) {
-    	treeScreenArea.x = x;
-    }
-    
-    public int getY() {
-    	return treeScreenArea.y;
-    }
-    
-    public void setY(int y) {
-    	treeScreenArea.y = y;
-    }
-    
-    public int getWidth() {
-    	return treeScreenArea.width;
-    }
-    
-    public void setWidth(int width) {
-    	treeScreenArea.width = width;
-    }
-
-    public int getHeight() {
-    	return treeScreenArea.height;
-    }
-    
-    public void setHeight(int height) {
-    	treeScreenArea.height = height;
-    }
-    
-    public int getBottom() {
-    	return getY() + getHeight();
-    }
-    
-    public Point getNodeCenter() {
-        return new Point(getX() + getWidth()/2, getY() + gRoot.getDimension().height / 2);
-    }
-    
     public void moveTree(int transX, int transY)
 	{
-		// Increase the coordinate of the treeArea
     	setX(getX() + transX);
     	setY(getY() + transY);
-
-		// Recursively do the same thing for all the children
+    	
     	for (GraphicAST gSubTree : gSubTrees) {
     		gSubTree.moveTree(transX, transY);
     	}
@@ -85,8 +43,8 @@ public class GraphicAST {
     public void computeTreeStructure() {
     	gRoot.computeDimension();
     	Dimension nodeDimension = gRoot.getDimension();
-    	
-        int posX = 0;
+
+        int posX = getX();
         for (GraphicAST gSubTree : gSubTrees) {
         	// Arrange this child's subtree
         	gSubTree.setX(posX);
@@ -133,15 +91,56 @@ public class GraphicAST {
         drawNodes();
     }
     
+    public int getX() {
+    	return treeScreenArea.x;
+    }
+    
+    public void setX(int x) {
+    	treeScreenArea.x = x;
+    }
+    
+    public int getY() {
+    	return treeScreenArea.y;
+    }
+    
+    public void setY(int y) {
+    	treeScreenArea.y = y;
+    }
+    
+    public int getWidth() {
+    	return treeScreenArea.width;
+    }
+    
+    public void setWidth(int width) {
+    	treeScreenArea.width = width;
+    }
+
+    public int getHeight() {
+    	return treeScreenArea.height;
+    }
+    
+    public void setHeight(int height) {
+    	treeScreenArea.height = height;
+    }
+    
+    public int getBottom() {
+    	return getY() + getHeight();
+    }
+    
+    public Point getDrawLocationForNodeCenter() {
+        return new Point(getX() + getWidth()/2, getY() + gRoot.getDimension().height / 2);
+    }
+    
     private void drawArcs() {
     	for (GraphicAST gSubTree : gSubTrees) {
-            drawLine(getNodeCenter(), gSubTree.getNodeCenter());
+            drawLine(getDrawLocationForNodeCenter(), gSubTree.getDrawLocationForNodeCenter());
             gSubTree.drawArcs();
         }
     }
     
     private void drawNodes() {
-    	gRoot.draw(getNodeCenter().x, getNodeCenter().y);
+    	Point center = getDrawLocationForNodeCenter();
+    	gRoot.draw(center.x, center.y);
         for (GraphicAST gSubTree : gSubTrees) {
         	gSubTree.drawNodes();
         }

@@ -15,6 +15,7 @@ public class AssignNode extends StatementNode {
 		super(token);
 		
 		this.assignedValueNode = assignedValueNode;
+		addChildIfNotNull(assignedValueNode);
 	}
 	
 	public NodeType getNodeType() {

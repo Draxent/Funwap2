@@ -23,8 +23,7 @@ public abstract class SyntacticNode {
 	    ASSIGN,
 	    VARIABLE,
 	    OPERATION,
-	    STRING,
-	    NUMBER
+	    CONSTANT
 	}
 	
 	public SyntacticNode(Token token) {

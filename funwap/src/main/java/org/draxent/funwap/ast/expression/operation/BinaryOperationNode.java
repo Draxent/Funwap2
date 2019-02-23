@@ -16,6 +16,8 @@ public class BinaryOperationNode extends OperationNode {
 		
 		this.leftNode = leftNode;
 		this.rightNode = rightNode;
+		addChildIfNotNull(leftNode);
+		addChildIfNotNull(rightNode);
 	}
 
     public ExpressionNode getLeftExpression() {

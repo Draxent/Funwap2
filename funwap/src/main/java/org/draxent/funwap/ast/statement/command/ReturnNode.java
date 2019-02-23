@@ -11,6 +11,7 @@ public class ReturnNode extends CommandNode {
 		super(token);
 		
 		this.returnedValueNode = returnedValueNode;
+		addChildIfNotNull(returnedValueNode);
 	}
 	
 	public SyntacticNode getReturnedValue() {

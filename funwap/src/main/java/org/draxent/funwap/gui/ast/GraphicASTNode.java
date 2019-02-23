@@ -39,57 +39,48 @@ public class GraphicASTNode {
 	public void draw(int x, int y) {
 		switch(node.getNodeType()) {
 		case BLOCK:
-			drawBlockNode(x, y);
+		case COMMAND:
+		case DECLARATION:
+		case ASSIGN:
+			drawRectangleNode(x, y);
 			break;
 		case FUNCTION:
-			drawFunctionNode(x, y);
+			drawOutlinedRectangleNode(x, y);
 			break;
-		case COMMAND:
-			drawCommandNode(x, y);
-			break;
-		case STRING:
-			drawStringNode(x, y);
+		case OPERATION:
+		case VARIABLE:
+		case CONSTANT:
+			drawOvalNode(x, y);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	private void drawBlockNode(int x, int y) {
+	private void drawRectangleNode(int x, int y) {
 		g.setFont(node.getFont()); 
 		g.setColor(Color.WHITE);
 		g.fillRect(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
-		g.setColor(Color.BLACK);
-		Point baseline = getStringBaselinePoint(x, y);
-		g.drawString(node.getTitle(), baseline.x, baseline.y);		
+		drawString(x, y);	
 	}
 	
-	private void drawFunctionNode(int x, int y) {
-		g.setFont(node.getFont());
-		g.setColor(Color.WHITE);
-		g.fillRect(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
+	private void drawOutlinedRectangleNode(int x, int y) {
+		drawRectangleNode(x, y);
 		g.setColor(Color.BLACK);
 		g.drawRect(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
-		Point baseline = getStringBaselinePoint(x, y);
-		g.drawString(node.getTitle(), baseline.x, baseline.y);
 	}
 	
-	private void drawCommandNode(int x, int y) {
+	private void drawOvalNode(int x, int y) {
 		g.setFont(node.getFont()); 
 		g.setColor(Color.WHITE);
-		g.fillRect(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
-		g.setColor(Color.BLACK);
-		Point baseline = getStringBaselinePoint(x, y);
-		g.drawString(node.getTitle(), baseline.x, baseline.y);		
+		g.fillOval(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
+		drawString(x, y);
 	}
 	
-	private void drawStringNode(int x, int y) {
-		g.setFont(node.getFont()); 
-		g.setColor(Color.WHITE);
-		g.fillRect(x - dimension.width/2 - PADDING, y, dimension.width, dimension.height);
+	private void drawString(int x, int y) {
 		g.setColor(Color.BLACK);
 		Point baseline = getStringBaselinePoint(x, y);
-		g.drawString(node.getTitle(), baseline.x, baseline.y);		
+		g.drawString(node.getTitle(), baseline.x, baseline.y);			
 	}
 	
 	private Point getStringBaselinePoint(int x, int y) {

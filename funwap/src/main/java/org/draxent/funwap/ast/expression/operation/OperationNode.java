@@ -1,13 +1,18 @@
 package org.draxent.funwap.ast.expression.operation;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.List;
 
+import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
+import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public abstract class OperationNode extends ExpressionNode {
-	private static final Font OPERATION_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	private static final Font OPERATION_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
 	
 	public enum OperationType {
 	    OR,
@@ -40,12 +45,8 @@ public abstract class OperationNode extends ExpressionNode {
 		return operationType;
 	}
 	
-	public Font getFont() { 
-		return OPERATION_FONT;
-	}
-	
-	public String getTitle() {
-		return getToken().getValue();
+	public List<GraphicText> getTitle() {
+		return Arrays.asList(new GraphicText(getToken().getValue(), OPERATION_FONT, Color.BLACK));
 	}
 	
 	private OperationType convertTokenIntoOperationType() {

@@ -1,14 +1,18 @@
 package org.draxent.funwap.ast.statement;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.SyntacticNode.NodeType;
+import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class BlockNode extends StatementNode {
-	private static final Font BLOCK_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	private static final Font BLOCK_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
 	
 	public enum BlockType
 	{
@@ -16,9 +20,7 @@ public class BlockNode extends StatementNode {
 		MAIN, // Used for the block of the main function.
 		THEN,
 		ELSE,
-		WHILE,
-		FOR,
-		BODY
+		BLOCK
 	};
 	
 	private BlockType type;
@@ -35,12 +37,8 @@ public class BlockNode extends StatementNode {
 		return NodeType.BLOCK;
 	}
 	
-	public Font getFont() { 
-		return BLOCK_FONT;
-	}
-	
-	public String getTitle() {
-		return getBlockType().name();
+	public List<GraphicText> getTitle() {
+		return Arrays.asList(new GraphicText(getBlockType().name(), BLOCK_FONT, Color.BLACK));
 	}
 	
 	public BlockType getBlockType() {

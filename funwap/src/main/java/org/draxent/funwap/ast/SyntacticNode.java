@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Stack;
 
 import org.draxent.funwap.environment.Eval;
+import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public abstract class SyntacticNode {
-	protected static final String SANS_SERIF = "sans-serif";
-	
 	private Token token;
 	protected List<SyntacticNode> children;
 	
@@ -50,8 +49,8 @@ public abstract class SyntacticNode {
 	}
 	
 	public abstract NodeType getNodeType();
-	public abstract Font getFont();
-	public abstract String getTitle();
+
+	public abstract List<GraphicText> getTitle();
 	
 	// Perform the type and environment checking
 	//abstract public Eval check(Stack<Eval> envStack);

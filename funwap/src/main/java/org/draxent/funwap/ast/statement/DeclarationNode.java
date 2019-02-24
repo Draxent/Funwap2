@@ -1,14 +1,19 @@
 package org.draxent.funwap.ast.statement;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.List;
 
+import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.environment.VariableType;
+import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class DeclarationNode extends StatementNode  {
-	private static final Font DECLARATION_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	private static final Font DECLARATION_FONT = new Font(Useful.SANS_SERIF, Font.PLAIN, 20);
 	
 	private VariableType type;
 	private ExpressionNode valueNode;
@@ -29,12 +34,11 @@ public class DeclarationNode extends StatementNode  {
 		return NodeType.DECLARATION;
 	}
 	
-	public Font getFont() { 
-		return DECLARATION_FONT;
-	}
-	
-	public String getTitle() {
-		return type.getTitle() + " " + getToken().getValue();
+	public List<GraphicText> getTitle() {
+		return Arrays.asList(
+				type.getTitle(),
+				new GraphicText(getToken().getValue(), DECLARATION_FONT, Color.BLACK)
+		);
 	}
 	
 	public VariableType getVariableType() {

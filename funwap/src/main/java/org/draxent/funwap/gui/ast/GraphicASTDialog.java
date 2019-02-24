@@ -57,7 +57,7 @@ public class GraphicASTDialog extends JDialog {
 				createVariableType(Eval.Type.BOOL),
 				createBinaryOperationNode(TokenType.EQUAL, createVarNode("a"), createVarNode("b"))
 		);
-		BlockNode blockFor = new BlockNode(null, BlockNode.BlockType.FOR);
+		BlockNode blockFor = new BlockNode(null, BlockNode.BlockType.BLOCK);
 		blockFor.addStatement(createAssignNode("a", createBinaryOperationNode(TokenType.PLUS, createVarNode("a"), createNumberNode(1))));
 		ForNode forNode = new ForNode(
 				createToken(TokenType.FOR),
@@ -91,7 +91,7 @@ public class GraphicASTDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(new GraphicASTPanel(programNode), BorderLayout.CENTER);
 
-		setSize(1000, 800);
+		setSize(1200, 800);
 		setLocationRelativeTo(null);
 	}
 	

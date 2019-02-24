@@ -43,7 +43,7 @@ public class ParserDeclarationList {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 
 		VariableType returnType = parseVariableType();
-		BlockNode bodyNode = parserBlock.parse(BlockNode.BlockType.BODY);
+		BlockNode bodyNode = parserBlock.parse(BlockNode.BlockType.BLOCK);
 
 		return new FunctionNode(functionName, returnType, formalParameters, bodyNode);		
 	}

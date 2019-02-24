@@ -1,5 +1,6 @@
 package org.draxent.funwap.syntacticanalysis;
 
+import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,6 +49,13 @@ public class ParserBlockTest {
 	}
 	
 	@Test
+	public void convertRGBtoHSB() {
+		float[] hsv = new float[3];
+		Color.RGBtoHSB(68, 183, 1, hsv);
+		System.out.println(String.format("convertRGBtoHSB: %f %f %f", hsv[0], hsv[1], hsv[2]));
+	}
+	
+	@Test
 	public void testCall() {
 		List<TokenType> tokenTypes = Arrays.asList(
 				TokenType.CURLYBR_OPEN,
@@ -70,6 +78,7 @@ public class ParserBlockTest {
 				TokenType.READLN,
 				TokenType.ROUNDBR_OPEN,
 				TokenType.ROUNDBR_CLOSE,
+				TokenType.SEMICOLONS,
 				TokenType.CURLYBR_CLOSE
 		);
 		AssignNode assignNode = (AssignNode) testStatement(tokenTypes, null, 1, 0, AssignNode.class);
@@ -84,6 +93,7 @@ public class ParserBlockTest {
 				TokenType.CURLYBR_OPEN,
 				TokenType.IDENTIFIER,
 				TokenType.ASSIGN_PLUS,
+				TokenType.SEMICOLONS,
 				TokenType.CURLYBR_CLOSE
 		);
 		ConstantNode n = new ConstantNode(utils.createToken(TokenType.NUMBER));
@@ -198,7 +208,7 @@ public class ParserBlockTest {
 		TokenReader tokenReader = new TokenReader(tokens);
 		when(parseExpression.parse()).thenReturn(parseExpressionReturn);
 		// Act
-		BlockNode n = new ParserBlock(tokenReader, parseExpression, parserDeclarationList).parse(BlockNode.BlockType.BODY);
+		BlockNode n = new ParserBlock(tokenReader, parseExpression, parserDeclarationList).parse(BlockNode.BlockType.BLOCK);
 		// Assert
 		verify(parserDeclarationList, times(timesParseDeclaration)).parse(any());
 		verify(parseExpression, times(timesParseExpression)).parse();

@@ -1,14 +1,20 @@
 package org.draxent.funwap.ast.expression;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
+import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.environment.Eval;
+import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class VarNode extends ExpressionNode {
-	private static final Font VAR_FONT = new Font(SANS_SERIF, Font.BOLD, 20);
+	private static final Font VAR_FONT = new Font(Useful.SANS_SERIF, Font.PLAIN, 20);
+	private static final Color VAR_COLOR = Color.getHSBColor(0.271978f, 0.994536f, 0.717647f);
 	
 	public VarNode(Token token) {
 		super(token);
@@ -22,7 +28,7 @@ public class VarNode extends ExpressionNode {
 		return VAR_FONT;
 	}
 	
-	public String getTitle() {
-		return getToken().getValue();
+	public List<GraphicText> getTitle() {
+		return Arrays.asList(new GraphicText(getToken().getValue(), VAR_FONT, VAR_COLOR));
 	}
 }

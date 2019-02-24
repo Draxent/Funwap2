@@ -2,6 +2,7 @@ package org.draxent.funwap.gui.ast;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -14,12 +15,12 @@ public class GraphicAST {
     private final int HOFFSET = 5;
     private final int VOFFSET = 10;
     
-    private Graphics g;
+    private Graphics2D g;
     private Rectangle treeScreenArea;
     private GraphicASTNode gRoot;
     private List<GraphicAST> gSubTrees;
 	
-    public GraphicAST(Graphics g, SyntacticNode root) {
+    public GraphicAST(Graphics2D g, SyntacticNode root) {
     	this.g = g;
     	this.treeScreenArea = new Rectangle(0, 0, 0, 0);
     	this.gRoot = new GraphicASTNode(g, root);

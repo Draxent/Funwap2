@@ -1,6 +1,8 @@
 package org.draxent.funwap.gui.ast;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JComponent;
 
@@ -18,7 +20,9 @@ public class GraphicASTPanel extends JComponent {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		GraphicAST ast = new GraphicAST(g, programNode);
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		GraphicAST ast = new GraphicAST(g2, programNode);
 		ast.computeTreeStructure();
 		ast.moveTree((getWidth() - ast.getWidth()) / 2, 0);
 		ast.draw();

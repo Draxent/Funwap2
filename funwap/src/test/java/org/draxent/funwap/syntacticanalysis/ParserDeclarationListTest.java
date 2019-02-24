@@ -144,9 +144,9 @@ public class ParserDeclarationListTest {
 		// Arrange
 		List<Token> tokens = utils.createTokenList(tokenTypes);
 		TokenReader tokenReader = new TokenReader(tokens);
-		BlockNode block = new BlockNode(null, BlockNode.BlockType.BODY);
+		BlockNode block = new BlockNode(null, BlockNode.BlockType.BLOCK);
 		when(parseExpression.parse()).thenReturn(parseExpressionReturn);
-		when(parserBlock.parse(BlockNode.BlockType.BODY)).thenReturn(block);
+		when(parserBlock.parse(BlockNode.BlockType.BLOCK)).thenReturn(block);
 		BlockNode n = new BlockNode(null, BlockNode.BlockType.PROGRAM);
 		// Act
 		new ParserDeclarationList(tokenReader, parseExpression, parserBlock).parse(n);

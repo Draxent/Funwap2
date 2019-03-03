@@ -74,7 +74,7 @@ public class ParserBlock {
 		Token identifier = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
 		StatementNode statementNode;
 		if (tokenReader.isCurrentOfType(TokenType.ROUNDBR_OPEN)) {
-			statementNode = parseCall(identifier, true);
+			statementNode = parseCall(identifier);
 		} else if (tokenReader.isCurrentOfType(TokenType.ASSIGN) && tokenReader.checkNextTokenType(TokenType.READLN)) {
 			statementNode = parseStatementReadln(identifier);
 		} else {
@@ -84,12 +84,12 @@ public class ParserBlock {
 		return statementNode;
 	}
 	
-	private CallNode parseCall(Token identifier, boolean isStatement) {
+	private CallNode parseCall(Token identifier) {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
 		List<ExpressionNode> actualParameters = parseActualParameters();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 
-		return new CallNode(identifier, actualParameters, isStatement);
+		return new CallNode(identifier, actualParameters);
 	}
 	
 	private List<ExpressionNode> parseActualParameters() {

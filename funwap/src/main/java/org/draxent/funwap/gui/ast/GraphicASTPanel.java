@@ -11,10 +11,14 @@ import org.draxent.funwap.ast.statement.BlockNode;
 public class GraphicASTPanel extends JComponent {
 	private static final long serialVersionUID = 1L;
 	
+	private GraphicASTDialog graphicASTDialog;
 	private BlockNode programNode;
+	private boolean isPaintedFirstTime;
 	
-	public GraphicASTPanel(BlockNode programNode) {
+	public GraphicASTPanel(GraphicASTDialog graphicASTDialog, BlockNode programNode) {
+		this.graphicASTDialog = graphicASTDialog;
 		this.programNode = programNode;
+		this.isPaintedFirstTime = false;
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -26,5 +30,15 @@ public class GraphicASTPanel extends JComponent {
 		ast.computeTreeStructure();
 		ast.moveTree((getWidth() - ast.getWidth()) / 2, 0);
 		ast.draw();
+
+		ifFirstTimeSetParentSizeAndLocation(ast);
+	}
+	
+	private void ifFirstTimeSetParentSizeAndLocation(GraphicAST ast) {
+		if (!isPaintedFirstTime) {
+			graphicASTDialog.setSize(ast.getWidth() + 100, ast.getHeight() + 100);
+			graphicASTDialog.setLocationRelativeTo(null);
+			isPaintedFirstTime = true;
+		}		
 	}
 }

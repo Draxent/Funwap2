@@ -19,10 +19,12 @@ public class ParserDeclarationList {
 	private ParserExpression parserExpression;
 	private ParserBlock parserBlock;
 		
-	public ParserDeclarationList(TokenReader tokenReader, ParserExpression parserExpression,
-			ParserBlock parserBlock) {
+	public ParserDeclarationList(TokenReader tokenReader, ParserExpression parserExpression) {
 		this.tokenReader = tokenReader;
 		this.parserExpression = parserExpression;
+	}
+	
+	public void setParserBlock(ParserBlock parserBlock) {
 		this.parserBlock = parserBlock;
 	}
 

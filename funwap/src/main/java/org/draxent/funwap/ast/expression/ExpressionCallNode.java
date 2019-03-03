@@ -1,4 +1,4 @@
-package org.draxent.funwap.ast.statement;
+package org.draxent.funwap.ast.expression;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,12 +10,12 @@ import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
-public class CallNode extends StatementNode {
+public class ExpressionCallNode extends ExpressionNode {
 	private static final Font CALL_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
 	
 	private List<ExpressionNode> actualParameters;
 	
-	public CallNode(Token token, List<ExpressionNode> actualParameters) {
+	public ExpressionCallNode(Token token, List<ExpressionNode> actualParameters) {
 		super(token);
 		
 		this.actualParameters = actualParameters;

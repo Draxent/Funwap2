@@ -18,8 +18,9 @@ public class Parser {
 	public Parser(List<Token> tokens) {
 		initTokenReader(tokens);
 		ParserExpression parserExpression = new ParserExpression(tokenReader);
-		parserDeclarationList = new ParserDeclarationList(tokenReader, parserExpression, parserBlock);
-		parserBlock = new ParserBlock(tokenReader, parserExpression, parserDeclarationList);	
+		parserDeclarationList = new ParserDeclarationList(tokenReader, parserExpression);
+		parserBlock = new ParserBlock(tokenReader, parserExpression, parserDeclarationList);
+		parserDeclarationList.setParserBlock(parserBlock);
 	}
 
 	Parser(List<Token> tokens, ParserDeclarationList parserDeclarationList, ParserBlock parserBlock) {

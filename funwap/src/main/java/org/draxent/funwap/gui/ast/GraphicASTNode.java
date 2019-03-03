@@ -51,6 +51,7 @@ public class GraphicASTNode {
 		case COMMAND:
 		case DECLARATION:
 		case ASSIGN:
+		case CALL:
 			drawRectangleNode(x, y);
 			break;
 		case FUNCTION:

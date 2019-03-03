@@ -149,7 +149,9 @@ public class ParserDeclarationListTest {
 		when(parserBlock.parse(BlockNode.BlockType.BLOCK)).thenReturn(block);
 		BlockNode n = new BlockNode(null, BlockNode.BlockType.PROGRAM);
 		// Act
-		new ParserDeclarationList(tokenReader, parseExpression, parserBlock).parse(n);
+		ParserDeclarationList parserDeclarationList = new ParserDeclarationList(tokenReader, parseExpression);
+		parserDeclarationList.setParserBlock(parserBlock);
+		parserDeclarationList.parse(n);
 		// Assert
 		verify(parseExpression, times(timesParseExpression)).parse();
 		verify(parserBlock, times(timesParseBlock)).parse(any());

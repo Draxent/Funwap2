@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.draxent.funwap.Useful;
-import org.draxent.funwap.gui.ast.GraphicASTDialog;
 
 public class IDE implements Runnable {
 	private JFrame frame;
@@ -28,10 +27,6 @@ public class IDE implements Runnable {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
-		GraphicASTDialog dialog = new GraphicASTDialog(frame);
-		dialog.setModal(true);
-		dialog.setVisible(true);
 	}
 	
 	private void setDefaultFontSize() {

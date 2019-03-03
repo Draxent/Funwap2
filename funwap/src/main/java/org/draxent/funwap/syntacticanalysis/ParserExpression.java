@@ -1,10 +1,12 @@
 package org.draxent.funwap.syntacticanalysis;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.draxent.funwap.FunwapException;
 import org.draxent.funwap.ast.expression.ConstantNode;
+import org.draxent.funwap.ast.expression.ExpressionCallNode;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.ast.expression.VarNode;
 import org.draxent.funwap.ast.expression.operation.BinaryOperationNode;
@@ -165,10 +167,35 @@ public class ParserExpression {
 		return expNode;
 	}
 
-	private VarNode parseIdentifier() {
+	private ExpressionNode parseIdentifier() {
 		Token identifier = tokenReader.matchTokenAndMoveOn(TokenType.IDENTIFIER);
-		// TODO: if (current.Type == TokenType.ROUNDBR_OPEN) Call(identifier);
-		return new VarNode(identifier);
+		if (tokenReader.isCurrentOfType(TokenType.ROUNDBR_OPEN)) {
+			return parseCall(identifier);
+		} else {
+			return new VarNode(identifier);			
+		}
+	}
+	
+	private ExpressionCallNode parseCall(Token identifier) {
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
+		List<ExpressionNode> actualParameters = parseActualParameters();
+		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
+
+		return new ExpressionCallNode(identifier, actualParameters);
+	}
+	
+	private List<ExpressionNode> parseActualParameters() {
+		List<ExpressionNode> actualParameters = new ArrayList<>();
+		if (!tokenReader.isCurrentOfType(TokenType.ROUNDBR_CLOSE))
+		{
+			actualParameters.add(parse());
+			while (tokenReader.isCurrentOfType(TokenType.COMMA))
+			{
+				tokenReader.moveNext();
+				actualParameters.add(parse());
+			}
+		}
+		return actualParameters;
 	}
 
 	private ConstantNode parseConstant() {

@@ -1,4 +1,4 @@
-func sum (n int) int
+func sum(n int) int
 {
 	var i, s = 0 int;
 	for (i = 1; i <= n; i++)
@@ -8,7 +8,7 @@ func sum (n int) int
 	return s;
 }
 
-func Main ()
+func main()
 {
 	var n int;
 	println("Inserisci N = ");

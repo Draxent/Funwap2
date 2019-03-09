@@ -6,13 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.draxent.funwap.Useful;
-import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.statement.StatementNode;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public abstract class CommandNode extends StatementNode {
-	private static final Font COMMAND_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
+	protected static final Font COMMAND_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
 	
 	public CommandNode(Token token) {
 		super(token);

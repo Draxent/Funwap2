@@ -5,7 +5,8 @@ import org.draxent.funwap.ast.statement.BlockNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class WhileNode extends CommandNode {
-
+	private static final String WHILE = "while";
+	
 	private ExpressionNode conditionNode;
     private BlockNode bodyNode;
     
@@ -24,5 +25,17 @@ public class WhileNode extends CommandNode {
 
 	public BlockNode getBody() {
 		return bodyNode;
+	}
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		appendTabs(sb, numTab);
+		sb.append(WHILE);
+		sb.append(SPACE);
+		sb.append(ROUNDBR_OPEN);
+		conditionNode.compile(sb, 0);
+		sb.append(ROUNDBR_CLOSE);
+		sb.append(NEW_LINE);
+		bodyNode.compile(sb, numTab);
 	}
 }

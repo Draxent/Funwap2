@@ -1,9 +1,6 @@
 package org.draxent.funwap.ast.expression.operation;
 
-import java.util.Stack;
-
 import org.draxent.funwap.ast.expression.ExpressionNode;
-import org.draxent.funwap.environment.Eval;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class UnaryOperationNode extends OperationNode {
@@ -20,4 +17,11 @@ public class UnaryOperationNode extends OperationNode {
 		return child;
 	}
 
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		sb.append(ROUNDBR_OPEN);
+		sb.append(getOperationType());
+		child.compile(sb, numTab);
+		sb.append(ROUNDBR_CLOSE);
+	}
 }

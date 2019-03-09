@@ -7,7 +7,7 @@ func fatt(n int) int
 	}
 }
 
-func Main()
+func main()
 {
 	var n int;
 

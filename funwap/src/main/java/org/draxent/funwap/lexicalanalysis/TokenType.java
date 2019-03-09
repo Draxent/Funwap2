@@ -20,8 +20,6 @@ public enum TokenType {
     ELSE("else", false, 2),
     WHILE("while", false, 2),
     FOR("for", false, 2),
-    ASYNC("async", false, 2),
-    DASYNC("dasync", false, 2),
     RETURN("return", false, 2),
     PRINTLN("println", false, 2),
     READLN("readln", false, 2),
@@ -51,7 +49,6 @@ public enum TokenType {
     TYPEBOOL("bool", false, 6),
     TYPECHAR("char", false, 6),
 	TYPESTRING("string", false, 6),
-    TYPEURL("url", false, 6),
     TYPEFUN("fun", false, 6),
 
     /* Constants */
@@ -59,12 +56,11 @@ public enum TokenType {
     FALSE("false", false, 7),
     NUMBER("^\\d+", true, 7), // Any integer number, e.g. 1	
     CHAR("^\\'.\\'", true, 7), // Any character delimited by single quotes, e.g. 'a
-	URL("^tcp://localhost:(\\\\d+)/(\\\\w+)", true, 7), // Any URL
     STRING("^\\\"[^\\\"]*\\\"", true, 7), // Any sequence of characters delimited by double quotes, e.g. "string"
     IDENTIFIER("^[_a-zA-Z][_a-zA-Z0-9]*", true, 9), // Any identifier
     
     /* Others */
-	MAIN("Main", false, 8); // Identifier "main" is treated separately to ensure that the program always present the main function.
+	MAIN("main", false, 8); // Identifier "main" is treated separately to ensure that the program always present the main function.
 	
 	private String matchString;
 	private boolean isRegEx;

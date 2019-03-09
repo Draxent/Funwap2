@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.draxent.funwap.Useful;
-import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.gui.ast.GraphicText;
@@ -47,5 +46,21 @@ public class DeclarationNode extends StatementNode  {
 
 	public ExpressionNode getValue() {
 		return valueNode;
+	}
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		appendTabs(sb, numTab);
+		sb.append(type.getCompiledValue());
+		sb.append(SPACE);
+		sb.append(getToken().getValue());
+		
+		if (valueNode != null) {
+			sb.append(SPACE);
+			sb.append(ASSIGN);
+			sb.append(SPACE);
+			valueNode.compile(sb, 0);
+		}
+		sb.append(SEMICOLON);
 	}
 }

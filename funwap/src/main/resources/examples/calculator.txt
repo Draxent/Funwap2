@@ -1,4 +1,4 @@
-func Main()
+func main()
 {
 	var a, b, r int;
 	var op char;

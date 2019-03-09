@@ -39,4 +39,23 @@ public class ExpressionCallNode extends ExpressionNode {
 	public ExpressionNode getctualParameter(int index) {
 		return actualParameters.get(index);
     }
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		sb.append(getToken().getValue());
+		sb.append(ROUNDBR_OPEN);
+		compileActualParameters(sb);
+		sb.append(ROUNDBR_CLOSE);
+	}
+	
+	private void compileActualParameters(StringBuilder sb) {
+		boolean firstIteration = true;
+		for (ExpressionNode exp : actualParameters) {
+			if (!firstIteration) {
+				sb.append(COMMA);
+			}
+			exp.compile(sb, 0);
+			firstIteration = false;
+		}		
+	}
 }

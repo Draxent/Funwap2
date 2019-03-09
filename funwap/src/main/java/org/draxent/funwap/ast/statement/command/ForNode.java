@@ -6,7 +6,8 @@ import org.draxent.funwap.ast.statement.StatementNode;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class ForNode extends CommandNode {
-
+	private static final String FOR = "for";
+	
 	// for (stm1; condition; stm2) { block }
 	private StatementNode stmNode1;
 	private ExpressionNode conditionNode;
@@ -41,5 +42,28 @@ public class ForNode extends CommandNode {
 
 	public BlockNode getBody() {
 		return bodyNode;
+	}
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		appendTabs(sb, numTab);
+		sb.append(FOR);
+		sb.append(SPACE);
+		sb.append(ROUNDBR_OPEN);
+		stmNode1.compile(sb, 0);
+		sb.append(SPACE);
+		conditionNode.compile(sb, 0);
+		sb.append(SEMICOLON);
+		sb.append(SPACE);
+		compileStmNode2WithoutSemicolon(sb);
+		sb.append(ROUNDBR_CLOSE);
+		sb.append(NEW_LINE);
+		bodyNode.compile(sb, numTab);
+	}
+	
+	private void compileStmNode2WithoutSemicolon(StringBuilder sb) {
+		StringBuilder tmp = new StringBuilder();
+		stmNode2.compile(tmp, 0);
+		sb.append(tmp.toString().substring(0, tmp.length() - 1));
 	}
 }

@@ -4,7 +4,7 @@ func counter() fun() int
 	return func() int { count++; return count; };
 }
 
-func Main()
+func main()
 {
 	var c1 = counter(), c2, c3 fun() int;
 	println(c1()); // 1

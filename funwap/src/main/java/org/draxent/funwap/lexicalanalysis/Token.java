@@ -22,7 +22,6 @@ public class Token {
             ||  (type == TokenType.TYPEBOOL)
             ||  (type == TokenType.TYPECHAR)
 			||  (type == TokenType.TYPESTRING)
-            ||  (type == TokenType.TYPEURL)
             ||  (type == TokenType.TYPEFUN)
        );
     }
@@ -30,8 +29,6 @@ public class Token {
     public boolean isStatement()
     {
         return ((type == TokenType.IDENTIFIER)
-			||	(type == TokenType.ASYNC)
-			||	(type == TokenType.DASYNC)
             ||  (type == TokenType.IF)
             ||  (type == TokenType.WHILE)
             ||  (type == TokenType.FOR)

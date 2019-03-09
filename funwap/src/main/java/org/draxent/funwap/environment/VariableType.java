@@ -46,4 +46,8 @@ public class VariableType {
 	public GraphicText getTitle() {
 		return new GraphicText(type.name().toLowerCase(), VARIABLETYPE_FONT, VARIABLETYPE_COLOR);
 	}
+	
+    public String getCompiledValue() {
+    	return type.getCompiledValue();	
+    }
 }

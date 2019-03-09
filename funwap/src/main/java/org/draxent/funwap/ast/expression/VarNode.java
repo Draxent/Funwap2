@@ -4,11 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 import org.draxent.funwap.Useful;
-import org.draxent.funwap.ast.SyntacticNode.NodeType;
-import org.draxent.funwap.environment.Eval;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -30,5 +27,10 @@ public class VarNode extends ExpressionNode {
 	
 	public List<GraphicText> getTitle() {
 		return Arrays.asList(new GraphicText(getToken().getValue(), VAR_FONT, VAR_COLOR));
+	}
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		sb.append(getToken().getValue());
 	}
 }

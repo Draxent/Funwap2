@@ -151,7 +151,6 @@ public class ParserExpression {
 		case NUMBER:
 		case CHAR:
 		case STRING:
-		case URL:
 		case TRUE:
 		case FALSE:
 			return parseConstant();

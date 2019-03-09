@@ -114,7 +114,7 @@ public class ParserBlock {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 		
-		return new AssignNode(identifier, readNode);
+		return readNode;
 	}
 	
 	private StatementNode parseStatementIf() {

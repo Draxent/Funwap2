@@ -10,7 +10,7 @@ func outside_adder() fun(int) int
 	};
 }
 
-func Main()
+func main()
 {
 	var adder = outside_adder() fun(int) int; // Using closure properly
 	var another_adder fun(int) int;

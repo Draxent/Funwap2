@@ -107,8 +107,6 @@ public class ScannerTest {
 		checkStringEqualTokenTypeUsingMatchToken("else", TokenType.ELSE);
 		checkStringEqualTokenTypeUsingMatchToken("while", TokenType.WHILE);
 		checkStringEqualTokenTypeUsingMatchToken("for", TokenType.FOR);
-		checkStringEqualTokenTypeUsingMatchToken("async", TokenType.ASYNC);
-		checkStringEqualTokenTypeUsingMatchToken("dasync", TokenType.DASYNC);
 		checkStringEqualTokenTypeUsingMatchToken("return", TokenType.RETURN);
 		checkStringEqualTokenTypeUsingMatchToken("println", TokenType.PRINTLN);
 		checkStringEqualTokenTypeUsingMatchToken("readln", TokenType.READLN);
@@ -132,9 +130,7 @@ public class ScannerTest {
 		checkStringEqualTokenTypeUsingMatchToken("bool", TokenType.TYPEBOOL);
 		checkStringEqualTokenTypeUsingMatchToken("char", TokenType.TYPECHAR);
 		checkStringEqualTokenTypeUsingMatchToken("string", TokenType.TYPESTRING);
-		checkStringEqualTokenTypeUsingMatchToken("url", TokenType.TYPEURL);
 		checkStringEqualTokenTypeUsingMatchToken("fun", TokenType.TYPEFUN);
-		checkStringEqualTokenTypeUsingMatchToken("url", TokenType.TYPEURL);
 		checkStringEqualTokenTypeUsingMatchToken("true", TokenType.TRUE);
 		checkStringEqualTokenTypeUsingMatchToken("false", TokenType.FALSE);
 		checkStringEqualTokenTypeUsingMatchToken("Main", TokenType.MAIN);

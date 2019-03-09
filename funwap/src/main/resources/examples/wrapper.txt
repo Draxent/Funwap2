@@ -7,7 +7,7 @@ func wrapper() fun(int) fun(int) int
 	};
 }
 
-func Main()
+func main()
 {
 	var w1 = wrapper(), w2 fun(int) fun(int) int;
 	var c1 = w1(0), c2, c3 fun(int) int;

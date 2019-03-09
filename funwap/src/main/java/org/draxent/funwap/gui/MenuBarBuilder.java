@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 import org.draxent.funwap.gui.actionlistener.ActionListenerAST;
 import org.draxent.funwap.gui.actionlistener.ActionListenerAbout;
 import org.draxent.funwap.gui.actionlistener.ActionListenerClearConsole;
+import org.draxent.funwap.gui.actionlistener.ActionListenerCompile;
 import org.draxent.funwap.gui.actionlistener.ActionListenerExit;
 import org.draxent.funwap.gui.actionlistener.ActionListenerHelp;
 import org.draxent.funwap.gui.actionlistener.ActionListenerOpen;
@@ -70,6 +71,7 @@ public class MenuBarBuilder {
 		menuItemShowAST.addActionListener(new ActionListenerAST(frame, textAreaCode, textAreaConsole));
 		JMenuItem menuItemCompile = new JMenuItem("Compile");
 		menuItemCompile.setIcon(createScaledImageIcon(IMAGES_DIR + "compile.png", SCALE_IMAGE_ICON));
+		menuItemCompile.addActionListener(new ActionListenerCompile(textAreaCode, textAreaConsole));
 		JMenuItem menuItemInterpret = new JMenuItem("Interpret");
 		menuItemInterpret.setIcon(createScaledImageIcon(IMAGES_DIR + "interpret.png", SCALE_IMAGE_ICON));
 		menuExecute.add(menuItemShowAST);

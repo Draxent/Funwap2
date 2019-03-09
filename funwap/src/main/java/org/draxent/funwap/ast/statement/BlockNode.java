@@ -7,12 +7,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.draxent.funwap.Useful;
-import org.draxent.funwap.ast.SyntacticNode.NodeType;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class BlockNode extends StatementNode {
 	private static final Font BLOCK_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
+	private static final String MAIN_CLASS = "public class Main" + NEW_LINE;
+	private static final String IMPORT_BUFFERED_READER = "import java.io.BufferedReader;" + NEW_LINE;
+	private static final String IMPORT_INPUT_STREAM_READER = "import java.io.InputStreamReader;" + NEW_LINE;
 	
 	public enum BlockType
 	{
@@ -57,4 +59,27 @@ public class BlockNode extends StatementNode {
 		statementList.add(child);
 		children.add(child);
     }
+	
+	@Override
+	public void compile(StringBuilder sb, int numTab) {
+		if (this.type.equals(BlockType.PROGRAM)) {
+			sb.append(IMPORT_BUFFERED_READER);
+			sb.append(IMPORT_INPUT_STREAM_READER);
+			sb.append(NEW_LINE);
+			sb.append(MAIN_CLASS);			
+		}
+		compileBlock(sb, numTab);
+	}
+	
+	public void compileBlock(StringBuilder sb, int numTab) {
+		appendTabs(sb, numTab);
+		sb.append(CURLYBR_OPEN);
+		sb.append(NEW_LINE);
+		for (StatementNode stm : statementList) {
+			stm.compile(sb, numTab + 1);
+			sb.append(NEW_LINE);
+		}
+		appendTabs(sb, numTab);
+		sb.append(CURLYBR_CLOSE);	
+	}
 }

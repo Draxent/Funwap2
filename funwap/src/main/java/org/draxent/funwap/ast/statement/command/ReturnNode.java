@@ -1,6 +1,7 @@
 package org.draxent.funwap.ast.statement.command;
 
 import org.draxent.funwap.ast.SyntacticNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class ReturnNode extends CommandNode {
@@ -23,8 +24,8 @@ public class ReturnNode extends CommandNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		sb.append(RETURN);
-		sb.append(SPACE);
-		returnedValueNode.compile(sb, 0);
-		sb.append(SEMICOLON);
+		sb.append(CompilerHelper.SPACE);
+		returnedValueNode.compile(sb, numTab);
+		sb.append(CompilerHelper.SEMICOLON);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.expression.ExpressionNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -44,17 +45,17 @@ public class CallNode extends StatementNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		sb.append(getToken().getValue());
-		sb.append(ROUNDBR_OPEN);
+		sb.append(CompilerHelper.ROUNDBR_OPEN);
 		compileActualParameters(sb);
-		sb.append(ROUNDBR_CLOSE);
-		sb.append(SEMICOLON);
+		sb.append(CompilerHelper.ROUNDBR_CLOSE);
+		sb.append(CompilerHelper.SEMICOLON);
 	}
 	
 	private void compileActualParameters(StringBuilder sb) {
 		boolean firstIteration = true;
 		for (ExpressionNode exp : actualParameters) {
 			if (!firstIteration) {
-				sb.append(COMMA);	
+				sb.append(CompilerHelper.COMMA);	
 			}
 			exp.compile(sb, 0);
 			firstIteration = false;

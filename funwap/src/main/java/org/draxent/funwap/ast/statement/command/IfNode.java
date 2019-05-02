@@ -2,6 +2,7 @@ package org.draxent.funwap.ast.statement.command;
 
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.ast.statement.BlockNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class IfNode extends CommandNode {
@@ -43,17 +44,17 @@ public class IfNode extends CommandNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		sb.append(IF);
-		sb.append(SPACE);
-		sb.append(ROUNDBR_OPEN);
+		sb.append(CompilerHelper.SPACE);
+		sb.append(CompilerHelper.ROUNDBR_OPEN);
 		conditionNode.compile(sb, 0);
-		sb.append(ROUNDBR_CLOSE);
-		sb.append(NEW_LINE);
+		sb.append(CompilerHelper.ROUNDBR_CLOSE);
+		sb.append(CompilerHelper.NEW_LINE);
 		thenNode.compile(sb, numTab);
 		if (elseNode != null) {
-			sb.append(NEW_LINE);
+			sb.append(CompilerHelper.NEW_LINE);
 			appendTabs(sb, numTab);
 			sb.append(ELSE);
-			sb.append(NEW_LINE);
+			sb.append(CompilerHelper.NEW_LINE);
 			elseNode.compile(sb, numTab);
 		}	
 	}

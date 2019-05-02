@@ -29,9 +29,11 @@ public class ActionListenerAST implements ActionListener {
 		List<Token> tokens = utils.scannerPhase();
 		BlockNode programBlock = utils.parserPhase(tokens);
 		
-		GraphicASTDialog dialog = new GraphicASTDialog(frame, programBlock);
-		textAreaConsole.append("Abstract Syntax Tree generated.\r\n");
-		dialog.setModal(true);
-		dialog.setVisible(true);
+		if (programBlock != null) {
+			GraphicASTDialog dialog = new GraphicASTDialog(frame, programBlock);
+			textAreaConsole.append("Abstract Syntax Tree generated.\r\n");
+			dialog.setModal(true);
+			dialog.setVisible(true);		
+		}
 	}
 }

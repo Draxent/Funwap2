@@ -44,7 +44,7 @@ public class ParserDeclarationList {
 		List<FormalParameter> formalParameters = parseFormalParams();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
 
-		VariableType returnType = parseVariableType();
+		VariableType returnType = parseVariableType(false);
 		BlockNode bodyNode = parserBlock.parse(BlockNode.BlockType.BLOCK);
 
 		return new FunctionNode(functionName, returnType, formalParameters, bodyNode);		
@@ -63,7 +63,7 @@ public class ParserDeclarationList {
 	private void parseNormalDeclaration(BlockNode blockNode) {
 		tokenReader.moveNext();
 		List<DeclarationVariable> variables = parseDeclarationVariables();
-		VariableType type = parseVariableType();
+		VariableType type = parseVariableType(false);
 		tokenReader.matchTokenAndMoveOn(TokenType.SEMICOLONS);
 
 		for (DeclarationVariable variable : variables) {
@@ -120,22 +120,22 @@ public class ParserDeclarationList {
 		}
 	}
 
-	private VariableType parseVariableType() {
+	private VariableType parseVariableType(boolean parentIsFunctionType) {
 		Eval.Type type = Eval.convertToken2EvalType(tokenReader.getCurrent());
 		tokenReader.moveNext();
 		if (type != Eval.Type.FUN) {
-			return new VariableType(type);
+			return new VariableType(type, parentIsFunctionType);
 		} else {
-			return parseFunctionType(type);
+			return parseFunctionType(type, parentIsFunctionType);
 		}
 	}
 
-	private VariableType parseFunctionType(Eval.Type type) {
+	private VariableType parseFunctionType(Eval.Type type, boolean parentIsFunctionType) {
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_OPEN);
 		List<Eval.Type> functionParameterTypes = parseFunctionParameterTypes();
 		tokenReader.matchTokenAndMoveOn(TokenType.ROUNDBR_CLOSE);
-		VariableType functionReturnType = parseVariableType();
-		return new VariableType(type, functionParameterTypes, functionReturnType);
+		VariableType functionReturnType = parseVariableType(true);
+		return new VariableType(type, functionParameterTypes, functionReturnType, parentIsFunctionType);
 	}
 
 	private List<Eval.Type> parseFunctionParameterTypes() {

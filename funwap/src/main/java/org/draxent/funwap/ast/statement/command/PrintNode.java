@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.draxent.funwap.ast.expression.ExpressionNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class PrintNode extends CommandNode {
@@ -38,11 +39,11 @@ public class PrintNode extends CommandNode {
 		for (ExpressionNode exp: expressionNodes) {
 			appendTabs(sb, numTab);
 			sb.append(PRINT);
-			sb.append(ROUNDBR_OPEN);
+			sb.append(CompilerHelper.ROUNDBR_OPEN);
 			exp.compile(sb, 0);
-			sb.append(ROUNDBR_CLOSE);
-			sb.append(SEMICOLON);
-			sb.append(NEW_LINE);
+			sb.append(CompilerHelper.ROUNDBR_CLOSE);
+			sb.append(CompilerHelper.SEMICOLON);
+			sb.append(CompilerHelper.NEW_LINE);
 		}
 		appendTabs(sb, numTab);
 		sb.append(PRINTLN);

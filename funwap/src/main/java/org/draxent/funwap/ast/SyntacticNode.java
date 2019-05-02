@@ -3,21 +3,11 @@ package org.draxent.funwap.ast;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
-public abstract class SyntacticNode {
-	protected static final char CURLYBR_OPEN = '{';
-	protected static final char CURLYBR_CLOSE = '}';
-	protected static final char ROUNDBR_OPEN = '(';
-	protected static final char ROUNDBR_CLOSE = ')';
-	protected static final char SPACE = ' ';
-	protected static final char COMMA = ',';
-	protected static final char TAB = '\t';
-	protected static final char SEMICOLON = ';';
-	protected static final char ASSIGN = '=';
-	protected static final String NEW_LINE = "\r\n";
-	
+public abstract class SyntacticNode {	
 	private Token token;
 	protected List<SyntacticNode> children;
 	
@@ -64,9 +54,11 @@ public abstract class SyntacticNode {
 	
 	protected static void appendTabs(StringBuilder sb, int numTab) {
 		for (int i = 0; i < numTab; i++) {
-			sb.append(TAB);
+			sb.append(CompilerHelper.TAB);
 		}
 	}
+	
+
 
 	// Perform the type and environment checking
 	//abstract public Eval check(Stack<Eval> envStack);

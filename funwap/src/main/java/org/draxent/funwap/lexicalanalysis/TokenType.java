@@ -50,6 +50,7 @@ public enum TokenType {
     TYPECHAR("char", false, 6),
 	TYPESTRING("string", false, 6),
     TYPEFUN("fun", false, 6),
+    TYPEVOID("void", false, 6),
 
     /* Constants */
     TRUE("true", false, 7),

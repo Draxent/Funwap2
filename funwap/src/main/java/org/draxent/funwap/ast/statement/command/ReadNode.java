@@ -4,21 +4,22 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class ReadNode extends CommandNode {
-	private static final String BUFFER_READER = "BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));" + NEW_LINE;
-	private static final String TRY = "try {" + NEW_LINE;
-	private static final String CATCH_NUMBER_FORMAT_EXCEPTION = "} catch(Exception numberFormatException) {" + NEW_LINE;
-	private static final String PRINT_INVALID_FORMAT = "System.out.println(\"Impossible to convert the text '%s' into a %s type.\");" + NEW_LINE;
+	private static final String BUFFER_READER = "BufferedReader bufferedReader_%s = new BufferedReader(new InputStreamReader(System.in));" + CompilerHelper.NEW_LINE;
+	private static final String TRY = "try {" + CompilerHelper.NEW_LINE;
+	private static final String CATCH_NUMBER_FORMAT_EXCEPTION = "} catch(Exception numberFormatException) {" + CompilerHelper.NEW_LINE;
+	private static final String PRINT_INVALID_FORMAT = "System.out.println(\"Impossible to convert the text '%s' into a %s type.\");" + CompilerHelper.NEW_LINE;
 	private static final String PARSE_INT = "Integer.parseInt";
-	private static final String READ_LINE = "bufferedReader.readLine()";
+	private static final String READ_LINE = "bufferedReader_%s.readLine()";
 	private static final String ZERO = "0";
 	
 	// Token of the variable involved into the reading operation.
 	private Token containerVariable;
-
+	
 	public ReadNode(Token token, Token containerVariable) {
 		super(token);
 		
@@ -33,7 +34,7 @@ public class ReadNode extends CommandNode {
 	public List<GraphicText> getTitle() {
 		return Arrays.asList(
 				new GraphicText(containerVariable.getValue(), COMMAND_FONT, Color.BLACK),
-				new GraphicText(String.valueOf(ASSIGN), COMMAND_FONT, Color.BLACK),
+				new GraphicText(String.valueOf(CompilerHelper.ASSIGN), COMMAND_FONT, Color.BLACK),
 				new GraphicText(getToken().getValue(), COMMAND_FONT, Color.BLUE)
 		);
 	}
@@ -41,7 +42,7 @@ public class ReadNode extends CommandNode {
 	@Override
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
-		sb.append(BUFFER_READER);
+		sb.append(String.format(BUFFER_READER, containerVariable.getValue()));
 		appendTabs(sb, numTab);
 		sb.append(TRY);
 		compileReadLine(sb, numTab);
@@ -51,15 +52,15 @@ public class ReadNode extends CommandNode {
 	private void compileReadLine(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab + 1);
 		sb.append(containerVariable.getValue());
-		sb.append(SPACE);
-		sb.append(ASSIGN);
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
+		sb.append(CompilerHelper.ASSIGN);
+		sb.append(CompilerHelper.SPACE);
 		sb.append(PARSE_INT);
-		sb.append(ROUNDBR_OPEN);
-		sb.append(READ_LINE);
-		sb.append(ROUNDBR_CLOSE);
-		sb.append(SEMICOLON);
-		sb.append(NEW_LINE);
+		sb.append(CompilerHelper.ROUNDBR_OPEN);
+		sb.append(String.format(READ_LINE, containerVariable.getValue()));
+		sb.append(CompilerHelper.ROUNDBR_CLOSE);
+		sb.append(CompilerHelper.SEMICOLON);
+		sb.append(CompilerHelper.NEW_LINE);
 	}
 	
 	private void compileCatchBlock(StringBuilder sb, int numTab) {
@@ -69,18 +70,18 @@ public class ReadNode extends CommandNode {
 		appendTabs(sb, numTab + 1);
 		sb.append(PRINT_INVALID_FORMAT);
 		appendTabs(sb, numTab);
-		sb.append(CURLYBR_CLOSE);
-		sb.append(NEW_LINE);		
+		sb.append(CompilerHelper.CURLYBR_CLOSE);
+		sb.append(CompilerHelper.NEW_LINE);		
 	}
 	
 	private void compileNeutralAssignment(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab + 1);
 		sb.append(containerVariable.getValue());
-		sb.append(SPACE);
-		sb.append(ASSIGN);
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
+		sb.append(CompilerHelper.ASSIGN);
+		sb.append(CompilerHelper.SPACE);
 		sb.append(ZERO);
-		sb.append(SEMICOLON);
-		sb.append(NEW_LINE);	
+		sb.append(CompilerHelper.SEMICOLON);
+		sb.append(CompilerHelper.NEW_LINE);	
 	}
 }

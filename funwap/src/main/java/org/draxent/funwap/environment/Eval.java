@@ -6,21 +6,26 @@ import org.draxent.funwap.lexicalanalysis.Token;
 public class Eval {
     public enum Type
     {
-		VOID("void"),
-        INT("int"),
-        BOOL("boolean"),
-		CHAR("char"),
-		STRING("String"),
-		FUN(""),
-		ALL(""); // special type used for ReadNode in the type checking phase
+		VOID("void", "Void"),
+        INT("int", "Integer"),
+        BOOL("boolean", "Boolean"),
+		CHAR("char", "Char"),
+		STRING("String", "String"),
+		FUN("Function", "Function"),
+		ALL(null, null); // special type used for ReadNode in the type checking phase
     	
 		private String compiledValue;
-    	Type(String compiledValue) {
+		private String objectValue;
+    	Type(String compiledValue, String objectValue) {
     		this.compiledValue = compiledValue;
+    		this.objectValue = objectValue;
     	}
     	
 		public String getCompiledValue() {
 			return compiledValue;
+		}
+		public String getObjectValue() {
+			return objectValue;
 		}
     }
     
@@ -101,6 +106,7 @@ public class Eval {
             case TYPECHAR: return Eval.Type.CHAR;
 			case TYPESTRING: return Eval.Type.STRING;
 			case TYPEFUN: return Eval.Type.FUN;
+			case TYPEVOID: return Eval.Type.VOID;
             default:
                 throw new FunwapException("Failed conversion.", token);
         }

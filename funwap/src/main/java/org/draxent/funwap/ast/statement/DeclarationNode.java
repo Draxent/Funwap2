@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.expression.ExpressionNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
@@ -51,16 +52,19 @@ public class DeclarationNode extends StatementNode  {
 	@Override
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
+		if (numTab == 1) {
+			sb.append(CompilerHelper.PUBLIC_STATIC);
+		}
 		sb.append(type.getCompiledValue());
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
 		sb.append(getToken().getValue());
 		
 		if (valueNode != null) {
-			sb.append(SPACE);
-			sb.append(ASSIGN);
-			sb.append(SPACE);
+			sb.append(CompilerHelper.SPACE);
+			sb.append(CompilerHelper.ASSIGN);
+			sb.append(CompilerHelper.SPACE);
 			valueNode.compile(sb, 0);
 		}
-		sb.append(SEMICOLON);
+		sb.append(CompilerHelper.SEMICOLON);
 	}
 }

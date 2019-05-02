@@ -1,11 +1,11 @@
 var sum = 0 int;
-func adder() fun(int) int
+func adder() fun(int) void
 {
-	return func(s int) int { sum += s; };
+	return func(s int) void { sum += s; };
 }
 func main()
 {
-	var f = adder() fun(int) int;
+	var f = adder() fun(int) void;
 	f(3);
 	println("SUM = ", sum);
 	f(2);

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.draxent.funwap.Useful;
 import org.draxent.funwap.ast.SyntacticNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
@@ -38,10 +39,10 @@ public class AssignNode extends StatementNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		sb.append(getToken().getValue());
-		sb.append(SPACE);
-		sb.append(ASSIGN);
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
+		sb.append(CompilerHelper.ASSIGN);
+		sb.append(CompilerHelper.SPACE);
 		assignedValueNode.compile(sb, 0);
-		sb.append(SEMICOLON);
+		sb.append(CompilerHelper.SEMICOLON);
 	}
 }

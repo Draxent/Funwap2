@@ -23,6 +23,7 @@ public class Token {
             ||  (type == TokenType.TYPECHAR)
 			||  (type == TokenType.TYPESTRING)
             ||  (type == TokenType.TYPEFUN)
+            ||  (type == TokenType.TYPEVOID)
        );
     }
     

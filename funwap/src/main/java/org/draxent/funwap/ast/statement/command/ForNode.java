@@ -3,6 +3,7 @@ package org.draxent.funwap.ast.statement.command;
 import org.draxent.funwap.ast.expression.ExpressionNode;
 import org.draxent.funwap.ast.statement.BlockNode;
 import org.draxent.funwap.ast.statement.StatementNode;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class ForNode extends CommandNode {
@@ -48,16 +49,16 @@ public class ForNode extends CommandNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		sb.append(FOR);
-		sb.append(SPACE);
-		sb.append(ROUNDBR_OPEN);
+		sb.append(CompilerHelper.SPACE);
+		sb.append(CompilerHelper.ROUNDBR_OPEN);
 		stmNode1.compile(sb, 0);
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
 		conditionNode.compile(sb, 0);
-		sb.append(SEMICOLON);
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SEMICOLON);
+		sb.append(CompilerHelper.SPACE);
 		compileStmNode2WithoutSemicolon(sb);
-		sb.append(ROUNDBR_CLOSE);
-		sb.append(NEW_LINE);
+		sb.append(CompilerHelper.ROUNDBR_CLOSE);
+		sb.append(CompilerHelper.NEW_LINE);
 		bodyNode.compile(sb, numTab);
 	}
 	

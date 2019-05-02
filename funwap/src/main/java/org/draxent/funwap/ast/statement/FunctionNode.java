@@ -5,8 +5,10 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import org.draxent.funwap.Useful;
+import org.draxent.funwap.compiler.CompilerHelper;
 import org.draxent.funwap.environment.Eval;
 import org.draxent.funwap.environment.VariableType;
 import org.draxent.funwap.gui.ast.GraphicText;
@@ -15,7 +17,6 @@ import org.draxent.funwap.lexicalanalysis.TokenType;
 
 public class FunctionNode extends StatementNode {
 	private static final Font FUNCTION_FONT = new Font(Useful.SANS_SERIF, Font.ITALIC, 20);
-	private static final String PUBLIC_STATIC = "public static ";
 	private static final String MAIN_PARAMETER = "String[] args";
 	
 	private VariableType returnType;
@@ -78,32 +79,28 @@ public class FunctionNode extends StatementNode {
 	public void compile(StringBuilder sb, int numTab) {
 		appendTabs(sb, numTab);
 		if (numTab == 1) {
-			sb.append(PUBLIC_STATIC);
+			sb.append(CompilerHelper.PUBLIC_STATIC);
 		}
 		sb.append(returnType.getCompiledValue());
-		sb.append(SPACE);
+		sb.append(CompilerHelper.SPACE);
 		sb.append(getToken().getValue());
-		sb.append(ROUNDBR_OPEN);
+		sb.append(CompilerHelper.ROUNDBR_OPEN);
 		if (getToken().getType().equals(TokenType.MAIN)) {
 			sb.append(MAIN_PARAMETER);
 		} else {
-			compileFormalParameters(sb);			
+			compileFormalParameters(sb);
 		}
-		sb.append(ROUNDBR_CLOSE);
-		sb.append(NEW_LINE);
+		sb.append(CompilerHelper.ROUNDBR_CLOSE);
+		sb.append(CompilerHelper.NEW_LINE);
 		bodyNode.compile(sb, numTab);
 	}
 	
 	private void compileFormalParameters(StringBuilder sb) {
-		boolean firstIteration = true;
-		for (FormalParameter param : formalParameters) {
-			if (!firstIteration) {
-				sb.append(COMMA);
-			}
-			sb.append(param.getType().getCompiledValue());
-			sb.append(SPACE);
-			sb.append(param.getIdentifier());
-			firstIteration = false;
-		}		
+		CompilerHelper.compileCommaSeparatedList(sb, formalParameters, new Function<FormalParameter, String>()  {
+		    @Override
+		    public String apply(FormalParameter param) {
+		    	return param.getType().getCompiledValue() + CompilerHelper.SPACE + param.getIdentifier();
+		    }
+		});	
 	}
 }

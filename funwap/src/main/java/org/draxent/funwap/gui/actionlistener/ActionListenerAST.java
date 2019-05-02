@@ -25,7 +25,7 @@ public class ActionListenerAST implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		if (utils.isTextAreaCodeEmpty()) {
 			return;
-		}	
+		}
 		List<Token> tokens = utils.scannerPhase();
 		BlockNode programBlock = utils.parserPhase(tokens);
 		

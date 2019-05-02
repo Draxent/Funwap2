@@ -6,6 +6,7 @@ import javax.swing.JTextArea;
 
 import org.draxent.funwap.FunwapException;
 import org.draxent.funwap.ast.statement.BlockNode;
+import org.draxent.funwap.gui.Cache;
 import org.draxent.funwap.lexicalanalysis.Scanner;
 import org.draxent.funwap.lexicalanalysis.Token;
 import org.draxent.funwap.syntacticanalysis.Parser;
@@ -30,7 +31,12 @@ public class ActionListenerUtils {
 	}
 	
 	public List<Token> scannerPhase() {
+		if (Cache.getCache().getTokens() != null) {
+			return Cache.getCache().getTokens();
+		}
+
 		List<Token> tokens = new Scanner(textAreaCode.getText()).tokenize();
+		Cache.getCache().setTokens(tokens);
 		textAreaConsole.append("Scanner phase proceduced the following tokens:\r\n");
 		for (Token token : tokens) {
 			textAreaConsole.append("  - " + token.toString() + "\r\n");
@@ -40,8 +46,13 @@ public class ActionListenerUtils {
 	}
 	
 	public BlockNode parserPhase(List<Token> tokens) {
+		if (Cache.getCache().getProgramBlock() != null) {
+			return Cache.getCache().getProgramBlock();
+		}
+		
 		try {
 			BlockNode programBlock = new Parser(tokens).parse();
+			Cache.getCache().setProgramBlock(programBlock);
 			textAreaConsole.append("Parser phase compleated.\r\n");
 			return programBlock;
 		} catch (FunwapException e) {

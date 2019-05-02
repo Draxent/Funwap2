@@ -11,6 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
+import org.draxent.funwap.gui.Cache;
+
 public class ActionListenerOpen implements ActionListener {
 	private JFrame frame;
 	private JTextArea textAreaCode;
@@ -30,6 +32,7 @@ public class ActionListenerOpen implements ActionListener {
 			return;
 		}
 
+		Cache.getCache().setOpenedFile(selectedFile);
 		textAreaCode.setText(readFileContent(selectedFile));
 		textAreaConsole.append("The file \"" + selectedFile.getName() + "\" has been loaded correctly!\r\n");
 	}

@@ -8,12 +8,13 @@ import java.util.List;
 
 import org.draxent.funwap.Useful;
 import org.draxent.funwap.compiler.CompilerHelper;
+import org.draxent.funwap.gui.Cache;
 import org.draxent.funwap.gui.ast.GraphicText;
 import org.draxent.funwap.lexicalanalysis.Token;
 
 public class BlockNode extends StatementNode {
 	private static final Font BLOCK_FONT = new Font(Useful.SANS_SERIF, Font.BOLD, 20);
-	private static final String MAIN_CLASS = "public class Main" + CompilerHelper.NEW_LINE;
+	private static final String MAIN_CLASS = "public class %s" + CompilerHelper.NEW_LINE;
 	private static final String IMPORT_BUFFERED_READER = "import java.io.BufferedReader;" + CompilerHelper.NEW_LINE;
 	private static final String IMPORT_INPUT_STREAM_READER = "import java.io.InputStreamReader;" + CompilerHelper.NEW_LINE;
 	private static final String IMPORT_FUNCTION = "import java.util.function.Function;" + CompilerHelper.NEW_LINE;
@@ -69,7 +70,7 @@ public class BlockNode extends StatementNode {
 			sb.append(IMPORT_INPUT_STREAM_READER);
 			sb.append(IMPORT_FUNCTION);
 			sb.append(CompilerHelper.NEW_LINE);
-			sb.append(MAIN_CLASS);			
+			sb.append(String.format(MAIN_CLASS, Cache.getCache().getProgramName()));			
 		}
 		compileBlock(sb, numTab);
 	}

@@ -57,9 +57,4 @@ public abstract class SyntacticNode {
 			sb.append(CompilerHelper.TAB);
 		}
 	}
-	
-
-
-	// Perform the type and environment checking
-	//abstract public Eval check(Stack<Eval> envStack);
 }

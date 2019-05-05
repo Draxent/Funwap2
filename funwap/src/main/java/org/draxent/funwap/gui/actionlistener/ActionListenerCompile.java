@@ -33,19 +33,26 @@ public class ActionListenerCompile implements ActionListener {
 		if (utils.isTextAreaCodeEmpty()) {
 			return;
 		}
+
 		String programName = getProgramName();
 		Cache.getCache().setProgramName(programName);
 		String outputFileName = programName + EXT;
-		PrintWriter printWriter = initPrintWriter(outputFileName);
-		List<Token> tokens = utils.scannerPhase();
-		BlockNode programBlock = utils.parserPhase(tokens);
 		
-		StringBuilder sb = new StringBuilder();
-		programBlock.compile(sb, 0);
-		printWriter.println(sb.toString());
-		printWriter.close();
-		textAreaConsole.append("Code translated with success into java file \"" + outputFileName + "\".\r\n");
-		compileProgram(outputFileName, programName);
+		try {
+			List<Token> tokens = utils.scannerPhase();
+			BlockNode programBlock = utils.parserPhase(tokens);
+			compileAstIntoJavaFile(outputFileName, programBlock);
+			textAreaConsole.append("Code translated with success into java file \"" + outputFileName + "\".\r\n");
+			compileJavaProgram(outputFileName, programName);
+		} catch (FileNotFoundException e) {
+			textAreaConsole.append("Cannot write into file \"" + outputFileName + "\".\r\n");
+		} catch (IOException e) {
+			textAreaConsole.append("Error running process javac.\r\n");
+			textAreaConsole.append(e.getMessage() + "\r\n");
+		} catch (InterruptedException e) {
+			textAreaConsole.append("Error compiling \"" + outputFileName + "\".\r\n");
+			textAreaConsole.append(e.getMessage() + "\r\n");
+		}
 	}
 	
 	private String getProgramName() {
@@ -57,33 +64,24 @@ public class ActionListenerCompile implements ActionListener {
 		}
 	}
 	
-	private PrintWriter initPrintWriter(String outputFileName) {
-		try {
-			return new PrintWriter(outputFileName);
-		} catch (FileNotFoundException e) {
-			textAreaConsole.append("Cannot write into file \"" + outputFileName + "\".\r\n");
-			return null;
-		}		
+	private void compileAstIntoJavaFile(String outputFileName, BlockNode programBlock) throws FileNotFoundException {
+		PrintWriter printWriter = new PrintWriter(outputFileName);
+		StringBuilder sb = new StringBuilder();
+		programBlock.compile(sb, 0);
+		printWriter.println(sb.toString());
+		printWriter.close();
 	}
 	
-    private void compileProgram(String outputFileName, String programName) {
-		try {
-			Process p = Runtime.getRuntime().exec("javac " + outputFileName, null, new File("C:\\Users\\feder\\Desktop\\Funwap2\\funwap"));
-	        redirectStdOutput(p.getInputStream());
-	        int numErrors = redirectStdOutput(p.getErrorStream());
-			p.waitFor();
-			if (numErrors > 0) {
-				textAreaConsole.append("Error compiling \"" + outputFileName + "\".\r\n");
-			} else {
-				textAreaConsole.append("File \"" + outputFileName + "\" successfully compiled.\r\n");
-				textAreaConsole.append("You can run it using the command \"java " + programName + "\".\r\n");				
-			}
-		} catch (IOException e) {
-			textAreaConsole.append("Error running process javac.\r\n");
-			textAreaConsole.append(e.getMessage() + "\r\n");
-		} catch (InterruptedException e) {
+    private void compileJavaProgram(String outputFileName, String programName) throws IOException, InterruptedException {
+		Process p = Runtime.getRuntime().exec("javac " + outputFileName, null, new File("C:\\Users\\feder\\Desktop\\Funwap2\\funwap"));
+        redirectStdOutput(p.getInputStream());
+        int numErrors = redirectStdOutput(p.getErrorStream());
+		p.waitFor();
+		if (numErrors > 0) {
 			textAreaConsole.append("Error compiling \"" + outputFileName + "\".\r\n");
-			textAreaConsole.append(e.getMessage() + "\r\n");
+		} else {
+			textAreaConsole.append("File \"" + outputFileName + "\" successfully compiled.\r\n");
+			textAreaConsole.append("You can run it using the command \"java " + programName + "\".\r\n");				
 		}
     }
     
